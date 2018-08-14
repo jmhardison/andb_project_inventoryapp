@@ -1,13 +1,125 @@
 package com.jonathanhardison.andb_project_inventoryapp;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import com.jonathanhardison.andb_project_inventoryapp.data.DataOperations;
+import com.jonathanhardison.andb_project_inventoryapp.data.InventoryContract;
+import com.jonathanhardison.andb_project_inventoryapp.data.InventoryDBHelper;
 
 public class MainActivity extends AppCompatActivity {
 
+    /** database helper */
+    private InventoryDBHelper dbHelper;
+    /** log tag */
+    public static final String LOG_TAG = InventoryDBHelper.class.getSimpleName();
+    /** database operations */
+    private DataOperations dbOps;
+
+
+    /***
+     * onCreate method called on activity creation. General setup actions.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //instantiate db helper.
+        dbHelper = new InventoryDBHelper(this);
+        //instantiate db operations.
+        dbOps = new DataOperations(this);
     }
+
+
+    /***
+     * onCreateOptionsMenu sets the active menu action.
+     * @param menu
+     * @return
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_mainactivity, menu);
+        return true;
+    }
+
+    /***
+     * onOptionsItemSelected handles when a menu option is selected.
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.action_create_sample_data:
+                //insert call to create sample data.
+                insertSampleData();
+                break;
+            case R.id.action_delete_data:
+                //insert call to delete all data
+                dbOps.deleteAllData();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
+    /***
+     * insertSampleData creates a batch of sample items in the database and logs their creation.
+     */
+    public void insertSampleData(){
+
+        //insert a few items of sample data.
+        dbOps.insertInventoryItem("PixelBlaster", 100, 9, "Target", "111-111-1111");
+        dbOps.insertInventoryItem("Earbuds", 132, 3, "Ingram Micro", "111-111-1121");
+        dbOps.insertInventoryItem("MightySqueegie", 300, 2, "Squeegie Store", "111-111-1113");
+        dbOps.insertInventoryItem("Paper", 1, 900, "Forest Supply", "111-111-2222");
+
+        //read the items back out and log them.
+        readAllDataAndLog();
+    }
+
+    /***
+     * reads all rows and logs them.
+     */
+    public void readAllDataAndLog(){
+        //get cursor
+        Cursor holder = dbOps.getIventory();
+
+        try {
+            //get column index info
+            int indexID = holder.getColumnIndex(InventoryContract.InventoryEntry._ID);
+            int indexProductName = holder.getColumnIndex(InventoryContract.InventoryEntry.COLUMN_PRODUCT_NAME);
+            int indexPrice = holder.getColumnIndex(InventoryContract.InventoryEntry.COLUMN_PRICE);
+            int indexQuantity = holder.getColumnIndex(InventoryContract.InventoryEntry.COLUMN_QUANTITY);
+            int indexSupplierName = holder.getColumnIndex(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_NAME);
+            int indexSupplierPhone = holder.getColumnIndex(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_PHONE);
+
+            //pass over items and log current (c) item.
+            while (holder.moveToNext()) {
+                int cID = holder.getInt(indexID);
+                String cProductName = holder.getString(indexProductName);
+                int cPrice = holder.getInt(indexPrice);
+                int cQuantity = holder.getInt(indexQuantity);
+                String cSupplierName = holder.getString(indexSupplierName);
+                String cSupplierPhone = holder.getString(indexSupplierPhone);
+
+                Log.i(LOG_TAG, "ID: " + cID + " Product Name: " + cProductName + " Price: " + cPrice + " Quantity: " + cQuantity + " Supplier Name: " + cSupplierName + " Supplier Phone: " + cSupplierPhone);
+            }
+        }
+        finally {
+            holder.close();
+        }
+
+    }
+
 }

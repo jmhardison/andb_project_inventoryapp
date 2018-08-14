@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">andb_project_inventoryapp</string>
+    <string name="action_create_sample_data">Create Sample Data</string>
+    <string name="action_delete_data">Delete Data</string>
 </resources>

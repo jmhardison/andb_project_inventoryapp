@@ -15,22 +15,40 @@ public class InventoryContract {
         /** Name of db table */
         public final static String TABLE_NAME = "inventory";
 
-        //entry id
+        /**
+         * Unique ID
+         * Type: INTEGER
+         */
         public final static String _ID = BaseColumns._ID;
 
-        //product name
+        /**
+         * Product Name for entry
+         * Type: TEXT
+         */
         public final static String COLUMN_PRODUCT_NAME = "productname";
 
-        //price
+        /**
+         * Price of product entry
+         * Type: INTEGER
+         */
         public final static String COLUMN_PRICE = "price";
 
-        //quantity
+        /**
+         * Quantity of product entry that is in-stock.
+         * Type: INTEGER
+         */
         public final static String COLUMN_QUANTITY = "quantity";
 
-        //supplier name
+        /**
+         * Supplier name for the product.
+         * Type: TEXT
+         */
         public final static String COLUMN_SUPPLIER_NAME = "suppliername";
 
-        //supplier phone number
+        /**
+         * Supplier phone number for the product.
+         * Type: TEXT
+         */
         public final static String COLUMN_SUPPLIER_PHONE = "supplierphone";
     }
 
