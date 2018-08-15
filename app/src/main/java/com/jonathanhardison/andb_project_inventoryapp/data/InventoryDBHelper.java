@@ -8,9 +8,6 @@ import com.jonathanhardison.andb_project_inventoryapp.data.InventoryContract.Inv
 
 public class InventoryDBHelper extends SQLiteOpenHelper {
 
-    /** log tag for the logs, derrived from class name */
-    public static final String LOG_TAG = InventoryDBHelper.class.getSimpleName();
-
     /** db file name */
     private static final String DB_NAME = "inventory.db";
 

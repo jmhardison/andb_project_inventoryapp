@@ -1,13 +1,10 @@
 package com.jonathanhardison.andb_project_inventoryapp;
 
-import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.jonathanhardison.andb_project_inventoryapp.data.DataOperations;
@@ -16,10 +13,8 @@ import com.jonathanhardison.andb_project_inventoryapp.data.InventoryDBHelper;
 
 public class MainActivity extends AppCompatActivity {
 
-    /** database helper */
-    private InventoryDBHelper dbHelper;
     /** log tag */
-    public static final String LOG_TAG = InventoryDBHelper.class.getSimpleName();
+    private static final String LOG_TAG = InventoryDBHelper.class.getSimpleName();
     /** database operations */
     private DataOperations dbOps;
 
@@ -33,8 +28,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //instantiate db helper.
-        dbHelper = new InventoryDBHelper(this);
         //instantiate db operations.
         dbOps = new DataOperations(this);
     }
@@ -76,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     /***
      * insertSampleData creates a batch of sample items in the database and logs their creation.
      */
-    public void insertSampleData(){
+    private void insertSampleData(){
 
         //insert a few items of sample data.
         dbOps.insertInventoryItem("PixelBlaster", 100, 9, "Target", "111-111-1111");
@@ -89,11 +82,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /***
-     * reads all rows and logs them.
+     * reads all rows and logs them. This is part of the temp read method construct. uses getInventory that returns a cursor.
      */
-    public void readAllDataAndLog(){
+    private void readAllDataAndLog(){
         //get cursor
-        Cursor holder = dbOps.getIventory();
+        Cursor holder = dbOps.getInventory();
 
         try {
             //get column index info

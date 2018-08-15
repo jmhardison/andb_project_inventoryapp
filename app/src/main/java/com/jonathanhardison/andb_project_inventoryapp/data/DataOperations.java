@@ -9,9 +9,9 @@ import android.util.Log;
 
 public class DataOperations {
     /** instantiate db helper */
-    private InventoryDBHelper dbHelper;
+    private final InventoryDBHelper dbHelper;
     /** log tag */
-    public static final String LOG_TAG = InventoryDBHelper.class.getSimpleName();
+    private static final String LOG_TAG = InventoryDBHelper.class.getSimpleName();
 
     /***
      * Instantiate DataOperations class with context.
@@ -66,7 +66,7 @@ public class DataOperations {
         return insertedRowId;
     }
 
-    public Cursor getIventory(){
+    public Cursor getInventory(){
         // get write mode for db
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -80,7 +80,7 @@ public class DataOperations {
                 InventoryContract.InventoryEntry.COLUMN_SUPPLIER_PHONE
         };
 
-        Cursor cursor = db.query(
+        return db.query(
                 InventoryContract.InventoryEntry.TABLE_NAME,
                 projection,
                 null,
@@ -89,8 +89,6 @@ public class DataOperations {
                 null,
                 null
         );
-
-        return cursor;
 
     }
 
