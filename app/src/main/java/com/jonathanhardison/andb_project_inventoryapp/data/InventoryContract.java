@@ -1,6 +1,8 @@
 package com.jonathanhardison.andb_project_inventoryapp.data;
 
+import android.net.Uri;
 import android.provider.BaseColumns;
+
 
 /**
  * Contract for Inventory App
@@ -10,7 +12,17 @@ public class InventoryContract {
     // empty constructor
     private InventoryContract(){}
 
+    //content authority
+    public static final String CONTENT_AUTHORITY = "com.jonathanhardison.andb_project_inventoryapp";
+    //base extension
+    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+    //path for table
+    public static final String PATH_INVENTORY = "inventory";
+
+
     public static final class InventoryEntry implements BaseColumns{
+        //uri for access to provider
+        public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_INVENTORY);
 
         /** Name of db table */
         public final static String TABLE_NAME = "inventory";
