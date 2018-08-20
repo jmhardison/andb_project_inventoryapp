@@ -10,6 +10,7 @@ import android.util.Log;
 import com.jonathanhardison.andb_project_inventoryapp.data.DataOperations;
 import com.jonathanhardison.andb_project_inventoryapp.data.InventoryContract;
 import com.jonathanhardison.andb_project_inventoryapp.data.InventoryDBHelper;
+import com.jonathanhardison.andb_project_inventoryapp.data.InventoryProvider;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,6 +18,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = InventoryDBHelper.class.getSimpleName();
     /** database operations */
     private DataOperations dbOps;
+    /** inventory provider */
+    private InventoryProvider invProvider;
 
 
     /***
@@ -30,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
 
         //instantiate db operations.
         dbOps = new DataOperations(this);
+
+        //instantiate inventory provider.
+        invProvider = new InventoryProvider();
     }
 
 
@@ -85,8 +91,21 @@ public class MainActivity extends AppCompatActivity {
      * reads all rows and logs them. This is part of the temp read method construct. uses getInventory that returns a cursor.
      */
     private void readAllDataAndLog(){
+
+        //projection of items we want.
+        String[] projection = {
+                InventoryContract.InventoryEntry._ID,
+                InventoryContract.InventoryEntry.COLUMN_PRODUCT_NAME,
+                InventoryContract.InventoryEntry.COLUMN_PRICE,
+                InventoryContract.InventoryEntry.COLUMN_QUANTITY,
+                InventoryContract.InventoryEntry.COLUMN_SUPPLIER_NAME,
+                InventoryContract.InventoryEntry.COLUMN_SUPPLIER_PHONE
+        };
+
         //get cursor
-        Cursor holder = dbOps.getInventory();
+        Cursor holder = getContentResolver().query(InventoryContract.InventoryEntry.CONTENT_URI, projection, null, null, null);
+//keep changing and changing
+
 
         try {
             //get column index info
