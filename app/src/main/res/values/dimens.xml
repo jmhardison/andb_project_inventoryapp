@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="mainactivity_dividerheight">0dp</dimen>
+</resources>

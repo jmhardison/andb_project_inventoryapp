@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.util.Log;
+import android.widget.ProgressBar;
 
 import com.jonathanhardison.andb_project_inventoryapp.data.InventoryContract;
 import com.jonathanhardison.andb_project_inventoryapp.data.InventoryDBHelper;
@@ -19,7 +20,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = InventoryDBHelper.class.getSimpleName();
     /** inventory provider */
     private InventoryProvider invProvider;
-
+    private ProgressBar progressBarView;
+    private InventoryCursorAdapter customAdapter;
 
     /***
      * onCreate method called on activity creation. General setup actions.
@@ -32,7 +34,14 @@ public class MainActivity extends AppCompatActivity {
 
         //instantiate inventory provider.
         invProvider = new InventoryProvider();
+
+        //pull view references
+        progressBarView = findViewById(R.id.indeterminateBar);
+
+        //TODO: continue working on incorporating the display components.
     }
+
+
 
 
     /***
