@@ -12,15 +12,22 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 public class InventoryProvider extends ContentProvider {
-    /** instantiate db helper */
+    /**
+     * instantiate db helper
+     */
     private static InventoryDBHelper dbHelper;
 
-    /** log tag */
+    /**
+     * log tag
+     */
     private static final String LOG_TAG = InventoryDBHelper.class.getSimpleName();
 
-    /** inventory ids for matcher */
+    /**
+     * inventory ids for matcher
+     */
     private static final int INVENTORY = 100;
     private static final int INVENTORY_ID = 101;
+
 
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
@@ -63,7 +70,7 @@ public class InventoryProvider extends ContentProvider {
 
         //get type of request uri and switch for appropriate actions.
         int reqtype = sUriMatcher.match(uri);
-        switch(reqtype){
+        switch (reqtype) {
             //if type is of INVENTORY
             case INVENTORY:
                 //set cursorHolder to query and return to caller after the break
@@ -81,7 +88,7 @@ public class InventoryProvider extends ContentProvider {
             case INVENTORY_ID:
                 //check for =? tog et id
                 selection = InventoryContract.InventoryEntry._ID + "=?";
-                selectionArgs = new String[] {String.valueOf(ContentUris.parseId(uri))};
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
 
                 //set cursorHolder to query and return to caller after the break
                 cursorHolder = db.query(
@@ -103,10 +110,27 @@ public class InventoryProvider extends ContentProvider {
         return cursorHolder;
     }
 
+    /***
+     * method to return type of uri for inventory
+     * @param uri
+     * @return
+     */
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
-        return null;
+        //pull uri
+        final int match = sUriMatcher.match(uri);
+        //switch based on type of uri
+        switch(match) {
+            case INVENTORY:
+                //return MIME type for dir
+                return InventoryContract.InventoryEntry.CONTENT_LIST_TYPE;
+            case INVENTORY_ID:
+                //return MIME type for item
+                return InventoryContract.InventoryEntry.CONTENT_ITEM_TYPE;
+            default:
+                throw new IllegalArgumentException("GetType is not supported for or Unknown URI "+ uri + " with match " + match);
+        }
     }
 
     /***
@@ -121,7 +145,7 @@ public class InventoryProvider extends ContentProvider {
         //pull uri
         final int match = sUriMatcher.match(uri);
         //switch based on type of uri
-        switch (match){
+        switch (match) {
             case INVENTORY:
                 return insertInventory(uri, values);
             default:
@@ -129,14 +153,61 @@ public class InventoryProvider extends ContentProvider {
         }
     }
 
+    /***
+     * delete inventory entry method
+     * @param uri
+     * @param selection
+     * @param selectionArgs
+     * @return
+     */
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        // get write mode for db
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        //pull uri to match
+        final int match = sUriMatcher.match(uri);
+        switch(match){
+            case INVENTORY:
+                //delete all items matching given selection and args
+                return db.delete(InventoryContract.InventoryEntry.TABLE_NAME,
+                        selection,
+                        selectionArgs);
+            case INVENTORY_ID:
+                //delete specific item
+                selection = InventoryContract.InventoryEntry.CONTENT_URI + "=?";
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+                return db.delete(InventoryContract.InventoryEntry.TABLE_NAME,
+                        selection,
+                        selectionArgs);
+            default:
+                throw new IllegalArgumentException("Delete is not supported for " + uri);
+        }
     }
 
+    /***
+     * update inventory entry method
+     * @param uri
+     * @param values
+     * @param selection
+     * @param selectionArgs
+     * @return
+     */
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        //pull uri to match
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case INVENTORY:
+                return updateInventory(uri, values, selection, selectionArgs);
+            case INVENTORY_ID:
+                //extract id and pass
+                selection = InventoryContract.InventoryEntry._ID + "=?";
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+                return updateInventory(uri, values, selection, selectionArgs);
+            default:
+                //throw exception for unsupported uri
+                throw new IllegalArgumentException("Update is not supported for " + uri);
+        }
     }
 
     /***
@@ -145,21 +216,82 @@ public class InventoryProvider extends ContentProvider {
      * @param values
      * @return
      */
-    private Uri insertInventory(Uri uri, ContentValues values){
+    private Uri insertInventory(Uri uri, ContentValues values) {
         // get write mode for db
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
+        /* perform validation logic */
+        //check product name is not null
+        String prodName = values.getAsString(InventoryContract.InventoryEntry.COLUMN_PRODUCT_NAME);
+        if (prodName == null) {
+            throw new IllegalArgumentException("Product name is required");
+        }
+        //check price is not negative
+        int prodPrice = values.getAsInteger(InventoryContract.InventoryEntry.COLUMN_PRICE);
+        if (prodPrice < 0) {
+            throw new IllegalArgumentException("Price cannot be negative");
+        }
+        //check quantity is not negative
+        int prodQuantity = values.getAsInteger(InventoryContract.InventoryEntry.COLUMN_QUANTITY);
+        if (prodQuantity < 0) {
+            throw new IllegalArgumentException("Quantity cannot be negative");
+        }
+
+
         //creation of some objects with data.
         long insertedRowId = db.insert(InventoryContract.InventoryEntry.TABLE_NAME, null, values);
-        Log.i(LOG_TAG, "Created inventory entry with ID: "+ insertedRowId);
+        Log.i(LOG_TAG, "Created inventory entry with ID: " + insertedRowId);
 
         //if insert failed it will be -1
-        if(insertedRowId == -1){
+        if (insertedRowId == -1) {
             Log.e(LOG_TAG, "Failed to insert row for " + uri);
             return null;
         }
 
         //otherwise we have the rowID and will return it with the appendid method.
         return ContentUris.withAppendedId(uri, insertedRowId);
+    }
+
+    /***
+     * helper method to update inventory item
+     * @param uri
+     * @param values
+     * @param selection
+     * @param selectionArgs
+     * @return
+     */
+    private int updateInventory(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+
+        /* perform validation logic */
+        //check product name is not null
+        String prodName = values.getAsString(InventoryContract.InventoryEntry.COLUMN_PRODUCT_NAME);
+        if (prodName == null) {
+            throw new IllegalArgumentException("Product name is required");
+        }
+        //check price is not negative
+        int prodPrice = values.getAsInteger(InventoryContract.InventoryEntry.COLUMN_PRICE);
+        if (prodPrice < 0) {
+            throw new IllegalArgumentException("Price cannot be negative");
+        }
+        //check quantity is not negative
+        int prodQuantity = values.getAsInteger(InventoryContract.InventoryEntry.COLUMN_QUANTITY);
+        if (prodQuantity < 0) {
+            throw new IllegalArgumentException("Quantity cannot be negative");
+        }
+
+        //if nothing in values, then don't do work.
+        if (values.size() == 0) {
+            return 0;
+        }
+
+        // get write mode for db
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        return db.update(InventoryContract.InventoryEntry.TABLE_NAME,
+                values,
+                selection,
+                selectionArgs);
+
+
     }
 }

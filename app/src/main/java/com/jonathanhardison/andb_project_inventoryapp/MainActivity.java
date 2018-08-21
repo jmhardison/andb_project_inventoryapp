@@ -121,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
 
         //get cursor
         Cursor holder = getContentResolver().query(InventoryContract.InventoryEntry.CONTENT_URI, projection, null, null, null);
-//keep changing and changing
 
 
         try {
