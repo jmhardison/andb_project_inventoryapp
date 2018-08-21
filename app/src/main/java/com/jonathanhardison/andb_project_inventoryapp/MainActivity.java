@@ -1,6 +1,8 @@
 package com.jonathanhardison.andb_project_inventoryapp;
 
+import android.content.ContentValues;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -78,10 +80,25 @@ public class MainActivity extends AppCompatActivity {
     private void insertSampleData(){
 
         //insert a few items of sample data.
-        dbOps.insertInventoryItem("PixelBlaster", 100, 9, "Target", "111-111-1111");
-        dbOps.insertInventoryItem("Earbuds", 132, 3, "Ingram Micro", "111-111-1121");
-        dbOps.insertInventoryItem("MightySqueegie", 300, 2, "Squeegie Store", "111-111-1113");
-        dbOps.insertInventoryItem("Paper", 1, 900, "Forest Supply", "111-111-2222");
+        //creation of some objects with data.
+        ContentValues inv1 = new ContentValues();
+        inv1.put(InventoryContract.InventoryEntry.COLUMN_PRODUCT_NAME, "PixelBlaster");
+        inv1.put(InventoryContract.InventoryEntry.COLUMN_PRICE, 100); //100 = 1.00 will use the last two digits as decimals.
+        inv1.put(InventoryContract.InventoryEntry.COLUMN_QUANTITY, 9);
+        inv1.put(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_NAME, "Target");
+        inv1.put(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_PHONE, "111-111-1111");
+
+        //creation of some objects with data.
+        ContentValues inv2 = new ContentValues();
+        inv2.put(InventoryContract.InventoryEntry.COLUMN_PRODUCT_NAME, "Earbuds");
+        inv2.put(InventoryContract.InventoryEntry.COLUMN_PRICE, 132); //100 = 1.00 will use the last two digits as decimals.
+        inv2.put(InventoryContract.InventoryEntry.COLUMN_QUANTITY, 3);
+        inv2.put(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_NAME, "Ingram Micro");
+        inv2.put(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_PHONE, "111-111-1121");
+
+        Uri holder1 = getContentResolver().insert(InventoryContract.InventoryEntry.CONTENT_URI, inv1);
+        Uri holder2 = getContentResolver().insert(InventoryContract.InventoryEntry.CONTENT_URI, inv2);
+
 
         //read the items back out and log them.
         readAllDataAndLog();

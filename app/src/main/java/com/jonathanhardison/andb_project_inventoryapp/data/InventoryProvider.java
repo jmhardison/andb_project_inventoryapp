@@ -9,10 +9,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 public class InventoryProvider extends ContentProvider {
     /** instantiate db helper */
-    private InventoryDBHelper dbHelper;
+    private static InventoryDBHelper dbHelper;
 
     /** log tag */
     private static final String LOG_TAG = InventoryDBHelper.class.getSimpleName();
@@ -108,10 +109,24 @@ public class InventoryProvider extends ContentProvider {
         return null;
     }
 
+    /***
+     * insert method for inventory
+     * @param uri
+     * @param values
+     * @return
+     */
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        return null;
+        //pull uri
+        final int match = sUriMatcher.match(uri);
+        //switch based on type of uri
+        switch (match){
+            case INVENTORY:
+                return insertInventory(uri, values);
+            default:
+                throw new IllegalArgumentException("Insertion is not supported for " + uri);
+        }
     }
 
     @Override
@@ -122,5 +137,29 @@ public class InventoryProvider extends ContentProvider {
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
         return 0;
+    }
+
+    /***
+     * helper method to insert Inventory item
+     * @param uri
+     * @param values
+     * @return
+     */
+    private Uri insertInventory(Uri uri, ContentValues values){
+        // get write mode for db
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        //creation of some objects with data.
+        long insertedRowId = db.insert(InventoryContract.InventoryEntry.TABLE_NAME, null, values);
+        Log.i(LOG_TAG, "Created inventory entry with ID: "+ insertedRowId);
+
+        //if insert failed it will be -1
+        if(insertedRowId == -1){
+            Log.e(LOG_TAG, "Failed to insert row for " + uri);
+            return null;
+        }
+
+        //otherwise we have the rowID and will return it with the appendid method.
+        return ContentUris.withAppendedId(uri, insertedRowId);
     }
 }
