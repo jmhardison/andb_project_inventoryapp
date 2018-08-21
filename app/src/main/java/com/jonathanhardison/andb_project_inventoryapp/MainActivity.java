@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.util.Log;
 
-import com.jonathanhardison.andb_project_inventoryapp.data.DataOperations;
 import com.jonathanhardison.andb_project_inventoryapp.data.InventoryContract;
 import com.jonathanhardison.andb_project_inventoryapp.data.InventoryDBHelper;
 import com.jonathanhardison.andb_project_inventoryapp.data.InventoryProvider;
@@ -18,8 +17,6 @@ public class MainActivity extends AppCompatActivity {
 
     /** log tag */
     private static final String LOG_TAG = InventoryDBHelper.class.getSimpleName();
-    /** database operations */
-    private DataOperations dbOps;
     /** inventory provider */
     private InventoryProvider invProvider;
 
@@ -32,9 +29,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //instantiate db operations.
-        dbOps = new DataOperations(this);
 
         //instantiate inventory provider.
         invProvider = new InventoryProvider();
@@ -59,20 +53,38 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_create_sample_data:
-                //insert call to create sample data.
                 insertSampleData();
                 break;
             case R.id.action_delete_data:
-                //insert call to delete all data
-                dbOps.deleteAllData();
+                deleteAllData();
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    /***
+     * helper method to delete all method from menu action.
+     */
+    private void deleteAllData() {
+        //pre-row count
+        Cursor holderPre = getContentResolver().query(InventoryContract.InventoryEntry.CONTENT_URI, null, null, null, null);
+        long rowCountBefore = holderPre.getCount();
+        holderPre.close();
 
+        //delete all from table.
+        int deletedRows = getContentResolver().delete(InventoryContract.InventoryEntry.CONTENT_URI,
+                null,
+                null);
+        //post-row count
+        Cursor holderPost = getContentResolver().query(InventoryContract.InventoryEntry.CONTENT_URI, null, null, null, null);
+        long rowCountAfter = holderPost.getCount();
+        holderPost.close();
+
+        //log the details to log file.
+        Log.i(LOG_TAG, "Row count before delete: " + rowCountBefore + " Row count after delete: " + rowCountAfter + " Total Rows Deleted: " + deletedRows);
+    }
 
     /***
      * insertSampleData creates a batch of sample items in the database and logs their creation.
