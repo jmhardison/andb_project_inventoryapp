@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.jonathanhardison.andb_project_inventoryapp.data.InventoryContract;
 import com.jonathanhardison.andb_project_inventoryapp.data.InventoryDBHelper;
@@ -112,22 +113,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
      * helper method to delete all method from menu action.
      */
     private void deleteAllData() {
-        //pre-row count
-        Cursor holderPre = getContentResolver().query(InventoryContract.InventoryEntry.CONTENT_URI, null, null, null, null);
-        long rowCountBefore = holderPre.getCount();
-        holderPre.close();
-
         //delete all from table.
         int deletedRows = getContentResolver().delete(InventoryContract.InventoryEntry.CONTENT_URI,
                 null,
                 null);
-        //post-row count
-        Cursor holderPost = getContentResolver().query(InventoryContract.InventoryEntry.CONTENT_URI, null, null, null, null);
-        long rowCountAfter = holderPost.getCount();
-        holderPost.close();
 
-        //log the details to log file.
-        Log.i(LOG_TAG, "Row count before delete: " + rowCountBefore + " Row count after delete: " + rowCountAfter + " Total Rows Deleted: " + deletedRows);
+        //display toast of deletion and info
+        Toast toastMessage = Toast.makeText(this, deletedRows + " items deleted from inventory.", Toast.LENGTH_LONG);
+        toastMessage.show();
     }
 
     /***
