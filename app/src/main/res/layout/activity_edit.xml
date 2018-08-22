@@ -4,11 +4,115 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     tools:context=".EditActivity">
 
+    <!-- product name -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Product Name:"/>
+        android:layout_alignBaseline="@+id/editTextProdName"
+        android:layout_alignParentStart="true"
+        android:text="Product Name:"
+        android:textSize="15sp" />
 
+    <EditText
+        android:id="@+id/editTextProdName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="10dp"
+        android:ems="12"
+        android:textSize="15sp"
+        android:inputType="textCapWords"
+        android:singleLine="false"
+        android:text="Name" />
+
+    <!-- product price -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/editTextPrice"
+        android:layout_alignParentStart="true"
+        android:text="Price:"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/editTextPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/editTextProdName"
+        android:layout_marginEnd="10dp"
+        android:ems="12"
+        android:inputType="numberDecimal"
+        android:text="Price"
+        android:textSize="15sp" />
+
+    <!-- product quantity -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/editTextQuantity"
+        android:layout_alignParentStart="true"
+        android:text="Quantity:"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/editTextQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/editTextPrice"
+        android:layout_marginEnd="10dp"
+        android:ems="12"
+        android:inputType="number"
+        android:text="Quantity"
+        android:textSize="15sp" />
+
+    <!-- supplier name -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/editTextSuppName"
+        android:layout_alignParentStart="true"
+        android:text="Supplier Name:"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/editTextSuppName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
+        android:layout_below="@id/editTextQuantity"
+        android:ems="12"
+        android:textSize="15sp"
+        android:inputType="textCapWords"
+        android:singleLine="false"
+        android:text="Name" />
+
+    <!-- supplier phone -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/editTextSuppPhone"
+        android:layout_alignParentStart="true"
+        android:text="Supplier Phone:"
+        android:textSize="15sp" />
+
+    <EditText
+        android:id="@+id/editTextSuppPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/editTextSuppName"
+        android:layout_marginEnd="10dp"
+        android:ems="12"
+        android:inputType="phone"
+        android:singleLine="false"
+        android:text="Phone"
+        android:textSize="15sp" />
 </RelativeLayout>
