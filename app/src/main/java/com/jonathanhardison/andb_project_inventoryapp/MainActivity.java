@@ -3,25 +3,44 @@ package com.jonathanhardison.andb_project_inventoryapp;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.util.Log;
+import android.view.View;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.jonathanhardison.andb_project_inventoryapp.data.InventoryContract;
 import com.jonathanhardison.andb_project_inventoryapp.data.InventoryDBHelper;
 import com.jonathanhardison.andb_project_inventoryapp.data.InventoryProvider;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
     /** log tag */
     private static final String LOG_TAG = InventoryDBHelper.class.getSimpleName();
-    /** inventory provider */
-    private InventoryProvider invProvider;
+    private static int LOADER_ID = 0;
     private ProgressBar progressBarView;
     private InventoryCursorAdapter customAdapter;
+    private ListView listView;
+    private View emptyView;
+    private FloatingActionButton fabInventoryAdd;
+
+    /***
+     * onStart method to handle additional query functions.
+     */
+    @Override
+    protected void onStart() {
+        super.onStart();
+        progressBarView.setVisibility(View.INVISIBLE);
+    }
 
     /***
      * onCreate method called on activity creation. General setup actions.
@@ -32,13 +51,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //instantiate inventory provider.
-        invProvider = new InventoryProvider();
-
         //pull view references
         progressBarView = findViewById(R.id.indeterminateBar);
+        emptyView = findViewById(R.id.empty_view);
+        listView = findViewById(R.id.list);
+        fabInventoryAdd = findViewById(R.id.fabActionButton);
 
-        //TODO: continue working on incorporating the display components.
+        //set empty view on listview.
+        listView.setEmptyView(emptyView);
+
+        //set onclick for fab
+        fabInventoryAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                //TODO: setup onclick to insert new item into inventory
+            }
+        });
+
+        //setup custom adapter and attach to listView
+        customAdapter = new InventoryCursorAdapter(this, null);
+        listView.setAdapter(customAdapter);
+
+        //init the loader
+        getSupportLoaderManager().initLoader(LOADER_ID, null, this);
     }
 
 
@@ -120,55 +155,35 @@ public class MainActivity extends AppCompatActivity {
         Uri holder1 = getContentResolver().insert(InventoryContract.InventoryEntry.CONTENT_URI, inv1);
         Uri holder2 = getContentResolver().insert(InventoryContract.InventoryEntry.CONTENT_URI, inv2);
 
-
-        //read the items back out and log them.
-        readAllDataAndLog();
     }
 
-    /***
-     * reads all rows and logs them. This is part of the temp read method construct. uses getInventory that returns a cursor.
-     */
-    private void readAllDataAndLog(){
 
+    @NonNull
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, @Nullable Bundle bundle) {
         //projection of items we want.
         String[] projection = {
                 InventoryContract.InventoryEntry._ID,
                 InventoryContract.InventoryEntry.COLUMN_PRODUCT_NAME,
-                InventoryContract.InventoryEntry.COLUMN_PRICE,
                 InventoryContract.InventoryEntry.COLUMN_QUANTITY,
-                InventoryContract.InventoryEntry.COLUMN_SUPPLIER_NAME,
-                InventoryContract.InventoryEntry.COLUMN_SUPPLIER_PHONE
+                InventoryContract.InventoryEntry.COLUMN_PRICE
         };
 
-        //get cursor
-        Cursor holder = getContentResolver().query(InventoryContract.InventoryEntry.CONTENT_URI, projection, null, null, null);
-
-
-        try {
-            //get column index info
-            int indexID = holder.getColumnIndex(InventoryContract.InventoryEntry._ID);
-            int indexProductName = holder.getColumnIndex(InventoryContract.InventoryEntry.COLUMN_PRODUCT_NAME);
-            int indexPrice = holder.getColumnIndex(InventoryContract.InventoryEntry.COLUMN_PRICE);
-            int indexQuantity = holder.getColumnIndex(InventoryContract.InventoryEntry.COLUMN_QUANTITY);
-            int indexSupplierName = holder.getColumnIndex(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_NAME);
-            int indexSupplierPhone = holder.getColumnIndex(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_PHONE);
-
-            //pass over items and log current (c) item.
-            while (holder.moveToNext()) {
-                int cID = holder.getInt(indexID);
-                String cProductName = holder.getString(indexProductName);
-                int cPrice = holder.getInt(indexPrice);
-                int cQuantity = holder.getInt(indexQuantity);
-                String cSupplierName = holder.getString(indexSupplierName);
-                String cSupplierPhone = holder.getString(indexSupplierPhone);
-
-                Log.i(LOG_TAG, "ID: " + cID + " Product Name: " + cProductName + " Price: " + cPrice + " Quantity: " + cQuantity + " Supplier Name: " + cSupplierName + " Supplier Phone: " + cSupplierPhone);
-            }
-        }
-        finally {
-            holder.close();
-        }
-
+        return new CursorLoader(this,
+                InventoryContract.InventoryEntry.CONTENT_URI,
+                projection,
+                null,
+                null,
+                null);
     }
 
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
+        customAdapter.swapCursor(cursor);
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+        customAdapter.swapCursor(null);
+    }
 }

@@ -10,9 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <provider
-            android:authorities="com.jonathanhardison.andb_project_inventoryapp"
             android:name=".data.InventoryProvider"
-            android:exported="false"/>
+            android:authorities="com.jonathanhardison.andb_project_inventoryapp"
+            android:exported="false" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,6 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".EditActivity"></activity>
     </application>
 
 </manifest>

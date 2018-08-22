@@ -107,6 +107,8 @@ public class InventoryProvider extends ContentProvider {
 
         }
 
+        cursorHolder.setNotificationUri(getContext().getContentResolver(), uri);
+
         return cursorHolder;
     }
 
@@ -166,19 +168,31 @@ public class InventoryProvider extends ContentProvider {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         //pull uri to match
         final int match = sUriMatcher.match(uri);
-        switch(match){
+        switch (match) {
             case INVENTORY:
                 //delete all items matching given selection and args
-                return db.delete(InventoryContract.InventoryEntry.TABLE_NAME,
+                int returnVal1 = db.delete(InventoryContract.InventoryEntry.TABLE_NAME,
                         selection,
                         selectionArgs);
+
+                //notify all listeners of change
+                if(returnVal1 > 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+                return returnVal1;
             case INVENTORY_ID:
                 //delete specific item
                 selection = InventoryContract.InventoryEntry.CONTENT_URI + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-                return db.delete(InventoryContract.InventoryEntry.TABLE_NAME,
+                int returnVal2 = db.delete(InventoryContract.InventoryEntry.TABLE_NAME,
                         selection,
                         selectionArgs);
+
+                //notify all listeners of change
+                if(returnVal2 > 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+                return returnVal2;
             default:
                 throw new IllegalArgumentException("Delete is not supported for " + uri);
         }
@@ -248,6 +262,9 @@ public class InventoryProvider extends ContentProvider {
             return null;
         }
 
+        //notify all listeners of change
+        getContext().getContentResolver().notifyChange(uri, null);
+
         //otherwise we have the rowID and will return it with the appendid method.
         return ContentUris.withAppendedId(uri, insertedRowId);
     }
@@ -287,11 +304,16 @@ public class InventoryProvider extends ContentProvider {
         // get write mode for db
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        return db.update(InventoryContract.InventoryEntry.TABLE_NAME,
+        int returnVal = db.update(InventoryContract.InventoryEntry.TABLE_NAME,
                 values,
                 selection,
                 selectionArgs);
 
+        //notify all listeners of change
+        if(returnVal > 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return returnVal;
 
     }
 }

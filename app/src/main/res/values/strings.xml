@@ -2,5 +2,5 @@
     <string name="app_name">andb_project_inventoryapp</string>
     <string name="action_create_sample_data">Create Sample Data</string>
     <string name="action_delete_data">Delete Data</string>
-    <string name="temp_message">Check log for output of actions.</string>
+    <string name="emptyview_textview">Hi there... your inventory is empty. Sad Sales...</string>
 </resources>
