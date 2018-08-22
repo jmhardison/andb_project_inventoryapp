@@ -28,7 +28,7 @@
         android:textSize="15sp"
         android:inputType="textCapWords"
         android:singleLine="false"
-        android:text="Name" />
+        android:hint="Name"/>
 
     <!-- product price -->
     <TextView
@@ -48,7 +48,7 @@
         android:layout_marginEnd="10dp"
         android:ems="12"
         android:inputType="numberDecimal"
-        android:text="Price"
+        android:hint="Price"
         android:textSize="15sp" />
 
     <!-- product quantity -->
@@ -69,7 +69,7 @@
         android:layout_marginEnd="10dp"
         android:ems="12"
         android:inputType="number"
-        android:text="Quantity"
+        android:hint="Quantity"
         android:textSize="15sp" />
 
     <!-- supplier name -->
@@ -92,7 +92,7 @@
         android:textSize="15sp"
         android:inputType="textCapWords"
         android:singleLine="false"
-        android:text="Name" />
+        android:hint="Name" />
 
     <!-- supplier phone -->
     <TextView
@@ -113,6 +113,6 @@
         android:ems="12"
         android:inputType="phone"
         android:singleLine="false"
-        android:text="Phone"
+        android:hint="Phone"
         android:textSize="15sp" />
 </RelativeLayout>

@@ -40,7 +40,7 @@ public class InventoryCursorAdapter extends CursorAdapter {
 
         //get real value
         String prodNameText = cursor.getString(prodNameIndex);
-        String prodPriceText = String.valueOf(cursor.getInt(prodPriceIndex));
+        String prodPriceText = "$" + String.format("%.2f", cursor.getDouble(prodPriceIndex));
         String prodQuantityText = String.valueOf(cursor.getInt(prodQuantityIndex));
 
         //set view text data

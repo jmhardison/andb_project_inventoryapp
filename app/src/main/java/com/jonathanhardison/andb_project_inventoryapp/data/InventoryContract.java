@@ -49,7 +49,7 @@ public class InventoryContract {
 
         /**
          * Price of product entry
-         * Type: INTEGER
+         * Type: DOUBLE (REAL)
          */
         public final static String COLUMN_PRICE = "price";
 

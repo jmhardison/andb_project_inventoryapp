@@ -1,6 +1,8 @@
 package com.jonathanhardison.andb_project_inventoryapp;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -15,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -66,6 +69,21 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             public void onClick(View view){
                 //TODO: setup onclick to insert new item into inventory
+                Intent addInvIntent = new Intent(MainActivity.this, EditActivity.class);
+                startActivity(addInvIntent);
+            }
+        });
+
+        //set up onclick for the list view
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //create uri of item
+                Uri invURI = ContentUris.withAppendedId(InventoryContract.InventoryEntry.CONTENT_URI, id);
+                //setup intent and load extras
+                Intent editInvIntent = new Intent(MainActivity.this, EditActivity.class);
+                editInvIntent.setData(invURI);
+                startActivity(editInvIntent);
             }
         });
 
@@ -132,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         //creation of some objects with data.
         ContentValues inv1 = new ContentValues();
         inv1.put(InventoryContract.InventoryEntry.COLUMN_PRODUCT_NAME, "PixelBlaster");
-        inv1.put(InventoryContract.InventoryEntry.COLUMN_PRICE, 100); //100 = 1.00 will use the last two digits as decimals.
+        inv1.put(InventoryContract.InventoryEntry.COLUMN_PRICE, 100.19); //100 = 1.00 will use the last two digits as decimals.
         inv1.put(InventoryContract.InventoryEntry.COLUMN_QUANTITY, 9);
         inv1.put(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_NAME, "Target");
         inv1.put(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_PHONE, "111-111-1111");

@@ -241,10 +241,11 @@ public class InventoryProvider extends ContentProvider {
             throw new IllegalArgumentException("Product name is required");
         }
         //check price is not negative
-        int prodPrice = values.getAsInteger(InventoryContract.InventoryEntry.COLUMN_PRICE);
+        double prodPrice = values.getAsDouble(InventoryContract.InventoryEntry.COLUMN_PRICE);
         if (prodPrice < 0) {
             throw new IllegalArgumentException("Price cannot be negative");
         }
+
         //check quantity is not negative
         int prodQuantity = values.getAsInteger(InventoryContract.InventoryEntry.COLUMN_QUANTITY);
         if (prodQuantity < 0) {
@@ -254,7 +255,6 @@ public class InventoryProvider extends ContentProvider {
 
         //creation of some objects with data.
         long insertedRowId = db.insert(InventoryContract.InventoryEntry.TABLE_NAME, null, values);
-        Log.i(LOG_TAG, "Created inventory entry with ID: " + insertedRowId);
 
         //if insert failed it will be -1
         if (insertedRowId == -1) {
@@ -286,7 +286,7 @@ public class InventoryProvider extends ContentProvider {
             throw new IllegalArgumentException("Product name is required");
         }
         //check price is not negative
-        int prodPrice = values.getAsInteger(InventoryContract.InventoryEntry.COLUMN_PRICE);
+        double prodPrice = values.getAsDouble(InventoryContract.InventoryEntry.COLUMN_PRICE);
         if (prodPrice < 0) {
             throw new IllegalArgumentException("Price cannot be negative");
         }
