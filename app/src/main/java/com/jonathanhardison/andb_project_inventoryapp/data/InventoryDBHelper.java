@@ -8,17 +8,23 @@ import com.jonathanhardison.andb_project_inventoryapp.data.InventoryContract.Inv
 
 public class InventoryDBHelper extends SQLiteOpenHelper {
 
-    /** db file name */
+    /**
+     * db file name
+     */
     private static final String DB_NAME = "inventory.db";
 
-    /** db schema version. */
+    /**
+     * db schema version.
+     */
     private static final int DB_VERSION = 1;
 
     /***
      * InventoryDBHelper constructor
      * @param context
      */
-    public InventoryDBHelper(Context context) {super(context, DB_NAME, null, DB_VERSION);}
+    public InventoryDBHelper(Context context) {
+        super(context, DB_NAME, null, DB_VERSION);
+    }
 
     /***
      * onCreate method to execute sql query and create db table and schema.
@@ -27,7 +33,7 @@ public class InventoryDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         // String to create table for inventory. Defaults for 0 are used for integers.
-        String SQL_CREATE_INVENTORY_TABLE =  "CREATE TABLE " + InventoryEntry.TABLE_NAME + " ("
+        String SQL_CREATE_INVENTORY_TABLE = "CREATE TABLE " + InventoryEntry.TABLE_NAME + " ("
                 + InventoryEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + InventoryEntry.COLUMN_PRODUCT_NAME + " TEXT NOT NULL, "
                 + InventoryEntry.COLUMN_PRICE + " REAL NOT NULL DEFAULT 0, "

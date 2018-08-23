@@ -25,7 +25,10 @@ import android.widget.Toast;
 import com.jonathanhardison.andb_project_inventoryapp.data.InventoryContract;
 import com.jonathanhardison.andb_project_inventoryapp.data.InventoryDBHelper;
 
-public class EditActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+/***
+ * EditActivity is used for both edit and new inventory items.
+ */
+public class EditActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String LOG_TAG = InventoryDBHelper.class.getSimpleName();
     private EditText prodName;
     private EditText prodQuantity;
@@ -62,7 +65,7 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
         Intent intent = getIntent();
         inputUri = intent.getData();
 
-        if(inputUri != null){
+        if (inputUri != null) {
 
             //set title
             this.setTitle("Edit Inventory");
@@ -73,8 +76,7 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
             //invalidate options menu to change the menu to "edit menu"
             invalidateOptionsMenu();
 
-        }
-        else{
+        } else {
             this.setTitle("Add Inventory");
         }
 
@@ -88,7 +90,7 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        if(inputUri == null){
+        if (inputUri == null) {
             //get menu items and then set to be invisible.
             MenuItem menuDeleteItem = menu.findItem(R.id.action_editactivity_deleterecord);
             MenuItem menuOrderItem = menu.findItem(R.id.action_editactivity_ordersupply);
@@ -128,10 +130,9 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
                 //call supplier
                 break;
             case android.R.id.home:
-                if(!changesMade) {
+                if (!changesMade) {
                     finish();
-                }
-                else{
+                } else {
                     DialogInterface.OnClickListener discardButtonClickListener =
                             new DialogInterface.OnClickListener() {
                                 @Override
@@ -152,8 +153,8 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
     /***
      * helper method to delete the current record
      */
-    private void deleteRecord(){
-        if(inputUri!=null) {
+    private void deleteRecord() {
+        if (inputUri != null) {
             //deletes the current record
             try {
 
@@ -171,14 +172,13 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
                 toastMessage.show();
                 Log.e(LOG_TAG, "Error deleting record. " + c.getMessage());
             }
-        }
-        else
-        {
+        } else {
             //in theory should not hit this safety message as the option is hidden until it's an existing record.
             Toast toastMessage = Toast.makeText(this, "Error deleting record.", Toast.LENGTH_LONG);
             toastMessage.show();
         }
     }
+
     /***
      * helper method to insert new record based on data entered.
      */
@@ -233,6 +233,12 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
 
+    /***
+     * method to handle create of loader and define the projection and get cursor.
+     * @param i
+     * @param bundle
+     * @return
+     */
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int i, @Nullable Bundle bundle) {
@@ -256,11 +262,16 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
 
     }
 
+    /***
+     * method to handle when load is finished and assigning values to views.
+     * @param loader
+     * @param cursor
+     */
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
 
         //set cursor position
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
 
             //get index of columns
             int prodNameIndex = cursor.getColumnIndex(InventoryContract.InventoryEntry.COLUMN_PRODUCT_NAME);
@@ -295,6 +306,10 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
+    /***
+     * method called on reset, clear out text fields.
+     * @param loader
+     */
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         //clear out data

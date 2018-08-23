@@ -123,7 +123,7 @@ public class InventoryProvider extends ContentProvider {
         //pull uri
         final int match = sUriMatcher.match(uri);
         //switch based on type of uri
-        switch(match) {
+        switch (match) {
             case INVENTORY:
                 //return MIME type for dir
                 return InventoryContract.InventoryEntry.CONTENT_LIST_TYPE;
@@ -131,7 +131,7 @@ public class InventoryProvider extends ContentProvider {
                 //return MIME type for item
                 return InventoryContract.InventoryEntry.CONTENT_ITEM_TYPE;
             default:
-                throw new IllegalArgumentException("GetType is not supported for or Unknown URI "+ uri + " with match " + match);
+                throw new IllegalArgumentException("GetType is not supported for or Unknown URI " + uri + " with match " + match);
         }
     }
 
@@ -176,7 +176,7 @@ public class InventoryProvider extends ContentProvider {
                         selectionArgs);
 
                 //notify all listeners of change
-                if(returnVal1 > 0) {
+                if (returnVal1 > 0) {
                     getContext().getContentResolver().notifyChange(uri, null);
                 }
                 return returnVal1;
@@ -189,7 +189,7 @@ public class InventoryProvider extends ContentProvider {
                         selectionArgs);
 
                 //notify all listeners of change
-                if(returnVal2 > 0) {
+                if (returnVal2 > 0) {
                     getContext().getContentResolver().notifyChange(uri, null);
                 }
                 return returnVal2;
@@ -280,19 +280,18 @@ public class InventoryProvider extends ContentProvider {
     private int updateInventory(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         /* perform validation logic */
         //first step is to see if we are checking only for quantity
-        if(values.containsKey(InventoryContract.InventoryEntry.COLUMN_QUANTITY) &&
+        if (values.containsKey(InventoryContract.InventoryEntry.COLUMN_QUANTITY) &&
                 !(values.containsKey(InventoryContract.InventoryEntry.COLUMN_PRICE) &&
-                values.containsKey(InventoryContract.InventoryEntry.COLUMN_PRODUCT_NAME) &&
-                values.containsKey(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_PHONE) &&
-                values.containsKey(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_NAME))){
+                        values.containsKey(InventoryContract.InventoryEntry.COLUMN_PRODUCT_NAME) &&
+                        values.containsKey(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_PHONE) &&
+                        values.containsKey(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_NAME))) {
             //perform validation of only the quantity
             //check quantity is not negative
             int prodQuantity = values.getAsInteger(InventoryContract.InventoryEntry.COLUMN_QUANTITY);
             if (prodQuantity < 0) {
                 throw new IllegalArgumentException("Quantity cannot be negative");
             }
-        }
-        else {
+        } else {
             //check product name is not null
             String prodName = values.getAsString(InventoryContract.InventoryEntry.COLUMN_PRODUCT_NAME);
             if (prodName == null) {
@@ -323,7 +322,7 @@ public class InventoryProvider extends ContentProvider {
                 selectionArgs);
 
         //notify all listeners of change
-        if(returnVal > 0) {
+        if (returnVal > 0) {
             getContext().getContentResolver().notifyChange(uri, null);
         }
         return returnVal;

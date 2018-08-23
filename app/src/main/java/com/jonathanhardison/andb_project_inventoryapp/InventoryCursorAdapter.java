@@ -62,28 +62,27 @@ public class InventoryCursorAdapter extends CursorAdapter {
 
 
         //bind button click for the sale
-        saleButton.setOnClickListener(new View.OnClickListener(){
+        saleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //need a method to decrement against the db.
                 //maybe an update where I submit the args and where??
 
                 //create new values
-                if(prodQuantityInt > 0) {
+                if (prodQuantityInt > 0) {
                     int newQuantity = (prodQuantityInt - 1);
                     ContentValues newVal = new ContentValues();
                     newVal.put(InventoryContract.InventoryEntry.COLUMN_QUANTITY, newQuantity);
 
+                    //now that we have the values of quantity, send it to the update method.
                     int updated = context.getContentResolver().update(currentUri, newVal, null, null);
-                    if(updated > 0){
+                    if (updated > 0) {
                         //generate toast
                         Toast toastMessage = Toast.makeText(context, "Sold 1 item.", Toast.LENGTH_SHORT);
                         toastMessage.show();
                     }
 
-                }
-                else
-                {
+                } else {
                     //show toast saying they need to order
                     Toast toastMessage = Toast.makeText(context, "Out of stock, order more.", Toast.LENGTH_LONG);
                     toastMessage.show();

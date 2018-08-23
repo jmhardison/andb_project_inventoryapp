@@ -26,9 +26,11 @@ import com.jonathanhardison.andb_project_inventoryapp.data.InventoryContract;
 import com.jonathanhardison.andb_project_inventoryapp.data.InventoryDBHelper;
 import com.jonathanhardison.andb_project_inventoryapp.data.InventoryProvider;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    /** log tag */
+    /**
+     * log tag
+     */
     private static final String LOG_TAG = InventoryDBHelper.class.getSimpleName();
     private static int LOADER_ID = 0;
     private ProgressBar progressBarView;
@@ -67,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         //set onclick for fab
         fabInventoryAdd.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 //TODO: setup onclick to insert new item into inventory
                 Intent addInvIntent = new Intent(MainActivity.this, EditActivity.class);
                 startActivity(addInvIntent);
@@ -94,8 +96,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         //init the loader
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
     }
-
-
 
 
     /***
@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     /***
      * insertSampleData creates a batch of sample items in the database and logs their creation.
      */
-    private void insertSampleData(){
+    private void insertSampleData() {
 
         //insert a few items of sample data.
         //creation of some objects with data.
