@@ -124,19 +124,33 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
                 break;
             case R.id.action_editactivity_ordersupply:
                 //call supplier
+                if (!changesMade) {
+                    finish();
+                } else {
+                    DialogInterface.OnClickListener discardButtonClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            // discarded
+                            dialPhone();
+                        }
+                    };
+
+                    //show dialog
+                    showUnsavedChanges(discardButtonClickListener);
+                }
+
                 break;
             case android.R.id.home:
                 if (!changesMade) {
                     finish();
                 } else {
-                    DialogInterface.OnClickListener discardButtonClickListener =
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    // discarded
-                                    finish();
-                                }
-                            };
+                    DialogInterface.OnClickListener discardButtonClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            // discarded
+                            finish();
+                        }
+                    };
 
                     //show dialog
                     showUnsavedChanges(discardButtonClickListener);
@@ -310,7 +324,7 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
 
         //create the alert dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Discard changes and return to list?");
+        builder.setMessage("Do you want to discard changes?");
         builder.setPositiveButton("DISCARD", discardButtonClickListener);
         builder.setNegativeButton("KEEP EDITING", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
@@ -325,7 +339,6 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-
 
 
     /***
@@ -351,5 +364,21 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
         showUnsavedChanges(discardButtonClickListener);
+    }
+
+    /***
+     * helper method to start phone intent
+     */
+    private void dialPhone(){
+        Intent phoneIntent = new Intent(Intent.ACTION_DIAL);
+        phoneIntent.setData(Uri.parse("tel:" + suppPhone.getText().toString()));
+        if (phoneIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(phoneIntent);
+        }
+        else{
+            //display toast of deletion and info don't call finish so the dialog remains open
+            Toast toastMessage = Toast.makeText(this, "Error calling vendor.", Toast.LENGTH_LONG);
+            toastMessage.show();
+        }
     }
 }

@@ -21,8 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".EditActivity" />
-        <activity android:name=".InventoryDetailActivity"></activity>
-    </application>
+        <activity android:name=".EditActivity"/>
+        <activity android:name=".InventoryDetailActivity"/>
 
+    </application>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
 </manifest>

@@ -1,6 +1,7 @@
 package com.jonathanhardison.andb_project_inventoryapp;
 
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -15,6 +16,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,8 +33,11 @@ public class InventoryDetailActivity extends AppCompatActivity implements Loader
     private TextView prodPrice;
     private TextView suppName;
     private TextView suppPhone;
+    private Button restockButton;
+    private Button saleButton;
     private Uri inputUri;
     private static int LOADER_ID = 2;
+    private int prodQuantityInt;
 
 
     /***
@@ -50,6 +56,8 @@ public class InventoryDetailActivity extends AppCompatActivity implements Loader
         prodQuantity = findViewById(R.id.detailTextQuantity);
         suppName = findViewById(R.id.detailTextSuppName);
         suppPhone = findViewById(R.id.detailTextSuppPhone);
+        restockButton = findViewById(R.id.buttonDetailRestock);
+        saleButton = findViewById(R.id.buttonDetailSale);
 
         //pull in intent extra's if there.
         //if null its a new record, if not then it's editing an existing record, which means pull it up.
@@ -66,6 +74,66 @@ public class InventoryDetailActivity extends AppCompatActivity implements Loader
             toastMessage.show();
             finish();
         }
+
+        //bind button click for the sale
+        saleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //need a method to decrement against the db.
+
+
+                //create new values
+                if (prodQuantityInt > 0) {
+                    int newQuantity = (prodQuantityInt - 1);
+                    ContentValues newVal = new ContentValues();
+                    newVal.put(InventoryContract.InventoryEntry.COLUMN_QUANTITY, newQuantity);
+
+                    //now that we have the values of quantity, send it to the update method.
+                    int updated = InventoryDetailActivity.this.getContentResolver().update(inputUri, newVal, null, null);
+                    if (updated > 0) {
+                        //generate toast
+                        Toast toastMessage = Toast.makeText(InventoryDetailActivity.this, "Sold 1 item.", Toast.LENGTH_SHORT);
+                        toastMessage.show();
+                    }
+
+                } else {
+                    //show toast saying they need to order
+                    Toast toastMessage = Toast.makeText(InventoryDetailActivity.this, "Out of stock, order more.", Toast.LENGTH_LONG);
+                    toastMessage.show();
+                }
+
+            }
+        });
+
+        //bind button click for the sale
+        restockButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //need a method to decrement against the db.
+
+
+                //create new values
+                if (prodQuantityInt >= 0) {
+                    int newQuantity = (prodQuantityInt + 1);
+                    ContentValues newVal = new ContentValues();
+                    newVal.put(InventoryContract.InventoryEntry.COLUMN_QUANTITY, newQuantity);
+
+                    //now that we have the values of quantity, send it to the update method.
+                    int updated = InventoryDetailActivity.this.getContentResolver().update(inputUri, newVal, null, null);
+                    if (updated > 0) {
+                        //generate toast
+                        Toast toastMessage = Toast.makeText(InventoryDetailActivity.this, "Restocked 1 item.", Toast.LENGTH_SHORT);
+                        toastMessage.show();
+                    }
+
+                } else {
+                    //show toast saying they need to order
+                    Toast toastMessage = Toast.makeText(InventoryDetailActivity.this, "Error restocking item.", Toast.LENGTH_LONG);
+                    toastMessage.show();
+                }
+
+            }
+        });
     }
 
     /***
@@ -118,10 +186,11 @@ public class InventoryDetailActivity extends AppCompatActivity implements Loader
             String prodNameText = cursor.getString(prodNameIndex);
             prodName.setText(prodNameText);
 
-            String prodPriceText = String.format(Locale.ENGLISH,"%.2f", cursor.getDouble(prodPriceIndex));
+            String prodPriceText = String.format(Locale.ENGLISH, "$%.2f", cursor.getDouble(prodPriceIndex));
             prodPrice.setText(prodPriceText);
 
-            String prodQuantityText = String.valueOf(cursor.getInt(prodQuantityIndex));
+            prodQuantityInt = cursor.getInt(prodQuantityIndex);
+            String prodQuantityText = String.valueOf(prodQuantityInt);
             prodQuantity.setText(prodQuantityText);
 
             //supplier is optional so check if -1 first.
@@ -144,7 +213,8 @@ public class InventoryDetailActivity extends AppCompatActivity implements Loader
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         //clear out data
         prodName.setText("");
-        prodPrice.setText("");;
+        prodPrice.setText("");
+        ;
         prodQuantity.setText("");
         suppName.setText("");
         suppPhone.setText("");
@@ -157,7 +227,7 @@ public class InventoryDetailActivity extends AppCompatActivity implements Loader
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_detailactivity_deleterecord:
                 //delete the current record.
                 showDeleteConfirmation();
@@ -171,6 +241,7 @@ public class InventoryDetailActivity extends AppCompatActivity implements Loader
                 break;
             case R.id.action_detailactivity_ordersupply:
                 //perform intent that launches the phone app
+                dialPhone();
                 break;
             case android.R.id.home:
                 finish();
@@ -235,6 +306,22 @@ public class InventoryDetailActivity extends AppCompatActivity implements Loader
         // Create and show the AlertDialog
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    /***
+     * helper method to start phone intent
+     */
+    private void dialPhone(){
+        Intent phoneIntent = new Intent(Intent.ACTION_DIAL);
+        phoneIntent.setData(Uri.parse("tel:" + suppPhone.getText().toString()));
+        if (phoneIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(phoneIntent);
+        }
+        else{
+            //display toast of deletion and info don't call finish so the dialog remains open
+            Toast toastMessage = Toast.makeText(this, "Error calling vendor.", Toast.LENGTH_LONG);
+            toastMessage.show();
+        }
     }
 
 }
