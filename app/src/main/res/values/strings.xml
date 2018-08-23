@@ -27,7 +27,7 @@
     <string name="error_callingvendor">Error calling vendor.</string>
     <string name="error_loadinginventory">Error loading inventory item.</string>
     <string name="error_restocking">Error restocking item.</string>
-    <string name="general_toast_restockitem">Restocked 1 item.</string>
+    <string name="general_toast_restockitem">Restocked item.</string>
     <string name="general_toast_inventoryitemdeleted">Inventory item deleted.</string>
     <string name="error_deletingrecord">Error deleting record.</string>
     <string name="general_deleteinventoryitem_message">Delete this inventory item?</string>
