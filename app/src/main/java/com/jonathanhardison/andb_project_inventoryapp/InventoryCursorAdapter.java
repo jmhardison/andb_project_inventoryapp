@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import com.jonathanhardison.andb_project_inventoryapp.data.InventoryContract;
 
+import java.util.Locale;
+
 public class InventoryCursorAdapter extends CursorAdapter {
     /***
      * instantiate
@@ -52,8 +54,8 @@ public class InventoryCursorAdapter extends CursorAdapter {
         final Uri currentUri = ContentUris.withAppendedId(InventoryContract.InventoryEntry.CONTENT_URI, cursor.getInt(prodIDIndex));
 
         String prodNameText = cursor.getString(prodNameIndex);
-        String prodPriceText = "Price: $" + String.format("%.2f", cursor.getDouble(prodPriceIndex));
-        String prodQuantityText = "Quantity: " + String.valueOf(prodQuantityInt);
+        String prodPriceText = context.getString(R.string.general_priceprepend) + String.format(Locale.ENGLISH, context.getString(R.string.general_priceformat), cursor.getDouble(prodPriceIndex));
+        String prodQuantityText = context.getString(R.string.general_quantityprepend) + String.valueOf(prodQuantityInt);
 
         //set view text data
         prodNameView.setText(prodNameText);
@@ -78,13 +80,13 @@ public class InventoryCursorAdapter extends CursorAdapter {
                     int updated = context.getContentResolver().update(currentUri, newVal, null, null);
                     if (updated > 0) {
                         //generate toast
-                        Toast toastMessage = Toast.makeText(context, "Sold 1 item.", Toast.LENGTH_SHORT);
+                        Toast toastMessage = Toast.makeText(context, R.string.general_toast_solditem, Toast.LENGTH_SHORT);
                         toastMessage.show();
                     }
 
                 } else {
                     //show toast saying they need to order
-                    Toast toastMessage = Toast.makeText(context, "Out of stock, order more.", Toast.LENGTH_LONG);
+                    Toast toastMessage = Toast.makeText(context, R.string.general_toast_outofstock, Toast.LENGTH_LONG);
                     toastMessage.show();
                 }
 

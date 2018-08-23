@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.jonathanhardison.andb_project_inventoryapp.data.InventoryContract.InventoryEntry;
 
+@SuppressWarnings("HardCodedStringLiteral")
 public class InventoryDBHelper extends SQLiteOpenHelper {
 
     /**

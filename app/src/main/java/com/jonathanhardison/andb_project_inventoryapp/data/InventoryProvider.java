@@ -11,6 +11,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.jonathanhardison.andb_project_inventoryapp.R;
+
 public class InventoryProvider extends ContentProvider {
     /**
      * instantiate db helper
@@ -258,7 +260,7 @@ public class InventoryProvider extends ContentProvider {
 
         //if insert failed it will be -1
         if (insertedRowId == -1) {
-            Log.e(LOG_TAG, "Failed to insert row for " + uri);
+            Log.e(LOG_TAG, getContext().getString(R.string.error_failedinsertrow) + uri);
             return null;
         }
 

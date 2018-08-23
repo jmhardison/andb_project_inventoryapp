@@ -8,6 +8,7 @@ import android.provider.BaseColumns;
 /**
  * Contract for Inventory App
  */
+@SuppressWarnings("HardCodedStringLiteral")
 public class InventoryContract {
 
     // empty constructor

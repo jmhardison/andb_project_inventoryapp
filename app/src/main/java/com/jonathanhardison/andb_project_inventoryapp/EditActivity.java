@@ -70,7 +70,7 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
         if (inputUri != null) {
 
             //set title
-            this.setTitle("Edit Inventory");
+            this.setTitle(getString(R.string.editactivity_title_editmode));
 
             //init the loader
             getSupportLoaderManager().initLoader(LOADER_ID, null, this);
@@ -79,7 +79,7 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
             invalidateOptionsMenu();
 
         } else {
-            this.setTitle("Add Inventory");
+            this.setTitle(getString(R.string.editactivity_title_addmode));
         }
 
     }
@@ -131,6 +131,7 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             // discarded
+                            changesMade=false;
                             dialPhone();
                         }
                     };
@@ -169,7 +170,7 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
         //if everything is empty then the user must have tried to save in error
         if (TextUtils.isEmpty(prodName.getText().toString()) && TextUtils.isEmpty(prodPrice.getText().toString()) && TextUtils.isEmpty(prodQuantity.getText().toString()) &&
                 TextUtils.isEmpty(suppName.getText().toString()) && TextUtils.isEmpty(suppPhone.getText().toString())) {
-            Toast toastMessage = Toast.makeText(this, "You must provide some info to save.", Toast.LENGTH_LONG);
+            Toast toastMessage = Toast.makeText(this, R.string.editactivity_toast_noinfoprovided, Toast.LENGTH_LONG);
             toastMessage.show();
         } else {
             //get data from items and insert record.
@@ -207,9 +208,9 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
 
             } catch (Exception c) {
                 //display toast of deletion and info
-                Toast toastMessage = Toast.makeText(this, "Error saving record.", Toast.LENGTH_LONG);
+                Toast toastMessage = Toast.makeText(this, R.string.error_savingrecord, Toast.LENGTH_LONG);
                 toastMessage.show();
-                Log.e(LOG_TAG, "Error saving record. " + c.getMessage());
+                Log.e(LOG_TAG, R.string.error_savingrecord + c.getMessage());
             }
         }
     }
@@ -266,7 +267,7 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
             String prodNameText = cursor.getString(prodNameIndex);
             prodName.setText(prodNameText);
 
-            String prodPriceText = String.format(Locale.ENGLISH, "%.2f", cursor.getDouble(prodPriceIndex));
+            String prodPriceText = String.format(Locale.ENGLISH, getString(R.string.general_priceformat), cursor.getDouble(prodPriceIndex));
             prodPrice.setText(prodPriceText);
 
             String prodQuantityText = String.valueOf(cursor.getInt(prodQuantityIndex));
@@ -324,9 +325,9 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
 
         //create the alert dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Do you want to discard changes?");
-        builder.setPositiveButton("DISCARD", discardButtonClickListener);
-        builder.setNegativeButton("KEEP EDITING", new DialogInterface.OnClickListener() {
+        builder.setMessage(R.string.general_discardchanges_message);
+        builder.setPositiveButton(R.string.general_discardchanges_positive, discardButtonClickListener);
+        builder.setNegativeButton(R.string.general_discardchanges_negative, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 //if user did not click discard, stay and close this dialog.
                 if (dialog != null) {
@@ -371,13 +372,13 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
      */
     private void dialPhone(){
         Intent phoneIntent = new Intent(Intent.ACTION_DIAL);
-        phoneIntent.setData(Uri.parse("tel:" + suppPhone.getText().toString()));
+        phoneIntent.setData(Uri.parse(getString(R.string.general_phoneintent_prependtype) + suppPhone.getText().toString()));
         if (phoneIntent.resolveActivity(getPackageManager()) != null) {
             startActivity(phoneIntent);
         }
         else{
             //display toast of deletion and info don't call finish so the dialog remains open
-            Toast toastMessage = Toast.makeText(this, "Error calling vendor.", Toast.LENGTH_LONG);
+            Toast toastMessage = Toast.makeText(this, R.string.error_callingvendor, Toast.LENGTH_LONG);
             toastMessage.show();
         }
     }

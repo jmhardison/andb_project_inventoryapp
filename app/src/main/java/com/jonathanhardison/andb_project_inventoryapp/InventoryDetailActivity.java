@@ -70,7 +70,7 @@ public class InventoryDetailActivity extends AppCompatActivity implements Loader
 
         } else {
             //pop toast and finish
-            Toast toastMessage = Toast.makeText(this, "Error loading inventory item.", Toast.LENGTH_LONG);
+            Toast toastMessage = Toast.makeText(this, R.string.error_loadinginventory, Toast.LENGTH_LONG);
             toastMessage.show();
             finish();
         }
@@ -92,13 +92,13 @@ public class InventoryDetailActivity extends AppCompatActivity implements Loader
                     int updated = InventoryDetailActivity.this.getContentResolver().update(inputUri, newVal, null, null);
                     if (updated > 0) {
                         //generate toast
-                        Toast toastMessage = Toast.makeText(InventoryDetailActivity.this, "Sold 1 item.", Toast.LENGTH_SHORT);
+                        Toast toastMessage = Toast.makeText(InventoryDetailActivity.this, R.string.general_toast_solditem, Toast.LENGTH_SHORT);
                         toastMessage.show();
                     }
 
                 } else {
                     //show toast saying they need to order
-                    Toast toastMessage = Toast.makeText(InventoryDetailActivity.this, "Out of stock, order more.", Toast.LENGTH_LONG);
+                    Toast toastMessage = Toast.makeText(InventoryDetailActivity.this, R.string.general_toast_outofstock, Toast.LENGTH_LONG);
                     toastMessage.show();
                 }
 
@@ -122,13 +122,13 @@ public class InventoryDetailActivity extends AppCompatActivity implements Loader
                     int updated = InventoryDetailActivity.this.getContentResolver().update(inputUri, newVal, null, null);
                     if (updated > 0) {
                         //generate toast
-                        Toast toastMessage = Toast.makeText(InventoryDetailActivity.this, "Restocked 1 item.", Toast.LENGTH_SHORT);
+                        Toast toastMessage = Toast.makeText(InventoryDetailActivity.this, R.string.general_toast_restockitem, Toast.LENGTH_SHORT);
                         toastMessage.show();
                     }
 
                 } else {
                     //show toast saying they need to order
-                    Toast toastMessage = Toast.makeText(InventoryDetailActivity.this, "Error restocking item.", Toast.LENGTH_LONG);
+                    Toast toastMessage = Toast.makeText(InventoryDetailActivity.this, R.string.error_restocking, Toast.LENGTH_LONG);
                     toastMessage.show();
                 }
 
@@ -186,7 +186,7 @@ public class InventoryDetailActivity extends AppCompatActivity implements Loader
             String prodNameText = cursor.getString(prodNameIndex);
             prodName.setText(prodNameText);
 
-            String prodPriceText = String.format(Locale.ENGLISH, "$%.2f", cursor.getDouble(prodPriceIndex));
+            String prodPriceText = String.format(Locale.ENGLISH, getString(R.string.general_priceformat), cursor.getDouble(prodPriceIndex));
             prodPrice.setText(prodPriceText);
 
             prodQuantityInt = cursor.getInt(prodQuantityIndex);
@@ -261,7 +261,7 @@ public class InventoryDetailActivity extends AppCompatActivity implements Loader
 
                 //create new record
                 getContentResolver().delete(inputUri, null, null);
-                Toast toastMessage = Toast.makeText(this, "Inventory item deleted.", Toast.LENGTH_LONG);
+                Toast toastMessage = Toast.makeText(this, R.string.general_toast_inventoryitemdeleted, Toast.LENGTH_LONG);
                 toastMessage.show();
 
                 //finishing here so that if there is an error the intent stays up.
@@ -269,13 +269,13 @@ public class InventoryDetailActivity extends AppCompatActivity implements Loader
 
             } catch (Exception c) {
                 //display toast of deletion and info don't call finish so the dialog remains open
-                Toast toastMessage = Toast.makeText(this, "Error deleting record.", Toast.LENGTH_LONG);
+                Toast toastMessage = Toast.makeText(this, R.string.error_deletingrecord, Toast.LENGTH_LONG);
                 toastMessage.show();
-                Log.e(LOG_TAG, "Error deleting record. " + c.getMessage());
+                Log.e(LOG_TAG, R.string.error_deletingrecord + c.getMessage());
             }
         } else {
             //in theory should not hit this safety message as the option is hidden until it's an existing record.
-            Toast toastMessage = Toast.makeText(this, "Error deleting record.", Toast.LENGTH_LONG);
+            Toast toastMessage = Toast.makeText(this, R.string.error_deletingrecord, Toast.LENGTH_LONG);
             toastMessage.show();
         }
     }
@@ -287,14 +287,14 @@ public class InventoryDetailActivity extends AppCompatActivity implements Loader
     private void showDeleteConfirmation() {
         //create dialog for handling deletion confirmation
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Delete this inventory item?");
-        builder.setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
+        builder.setMessage(R.string.general_deleteinventoryitem_message);
+        builder.setPositiveButton(R.string.general_deleteinventoryitem_positive, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // delete selected, commit action
                 deleteRecord();
             }
         });
-        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.general_deleteinventoryitem_negative, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "Cancel" button, so dismiss the dialog
                 if (dialog != null) {
@@ -313,13 +313,13 @@ public class InventoryDetailActivity extends AppCompatActivity implements Loader
      */
     private void dialPhone(){
         Intent phoneIntent = new Intent(Intent.ACTION_DIAL);
-        phoneIntent.setData(Uri.parse("tel:" + suppPhone.getText().toString()));
+        phoneIntent.setData(Uri.parse(R.string.general_phoneintent_prependtype + suppPhone.getText().toString()));
         if (phoneIntent.resolveActivity(getPackageManager()) != null) {
             startActivity(phoneIntent);
         }
         else{
             //display toast of deletion and info don't call finish so the dialog remains open
-            Toast toastMessage = Toast.makeText(this, "Error calling vendor.", Toast.LENGTH_LONG);
+            Toast toastMessage = Toast.makeText(this, R.string.error_callingvendor, Toast.LENGTH_LONG);
             toastMessage.show();
         }
     }

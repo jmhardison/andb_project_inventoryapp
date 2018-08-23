@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 null);
 
         //display toast of deletion and info
-        Toast toastMessage = Toast.makeText(this, deletedRows + " items deleted from inventory.", Toast.LENGTH_LONG);
+        Toast toastMessage = Toast.makeText(this, deletedRows + getString(R.string.mainactivity_toast_deletedfrominventory), Toast.LENGTH_LONG);
         toastMessage.show();
     }
 
@@ -149,19 +149,19 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         //insert a few items of sample data.
         //creation of some objects with data.
         ContentValues inv1 = new ContentValues();
-        inv1.put(InventoryContract.InventoryEntry.COLUMN_PRODUCT_NAME, "PixelBlaster");
+        inv1.put(InventoryContract.InventoryEntry.COLUMN_PRODUCT_NAME, getString(R.string.sampledata_product1_name));
         inv1.put(InventoryContract.InventoryEntry.COLUMN_PRICE, 100.19); //100 = 1.00 will use the last two digits as decimals.
         inv1.put(InventoryContract.InventoryEntry.COLUMN_QUANTITY, 9);
-        inv1.put(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_NAME, "Target");
-        inv1.put(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_PHONE, "111-111-1111");
+        inv1.put(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_NAME, getString(R.string.sampledata_product1_suppliername));
+        inv1.put(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_PHONE, getString(R.string.sampledata_product1_supplierphone));
 
         //creation of some objects with data.
         ContentValues inv2 = new ContentValues();
-        inv2.put(InventoryContract.InventoryEntry.COLUMN_PRODUCT_NAME, "Earbuds");
+        inv2.put(InventoryContract.InventoryEntry.COLUMN_PRODUCT_NAME, getString(R.string.sampledata_product2_name));
         inv2.put(InventoryContract.InventoryEntry.COLUMN_PRICE, 132); //100 = 1.00 will use the last two digits as decimals.
         inv2.put(InventoryContract.InventoryEntry.COLUMN_QUANTITY, 3);
-        inv2.put(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_NAME, "Ingram Micro");
-        inv2.put(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_PHONE, "111-111-1121");
+        inv2.put(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_NAME, getString(R.string.sampledata_product2_suppliername));
+        inv2.put(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_PHONE, getString(R.string.sampledata_product2_supplierphone));
 
         Uri holder1 = getContentResolver().insert(InventoryContract.InventoryEntry.CONTENT_URI, inv1);
         Uri holder2 = getContentResolver().insert(InventoryContract.InventoryEntry.CONTENT_URI, inv2);
