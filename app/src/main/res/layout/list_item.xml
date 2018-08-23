@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Layout for a single list item in the list of pets -->
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -13,14 +13,17 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
         android:textAppearance="?android:textAppearanceMedium"
+        android:text="placeholder"
         android:textColor="#2B3D4D"  />
 
     <TextView
         android:id="@+id/quantity"
-        android:layout_width="wrap_content"
+        android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
         android:textAppearance="?android:textAppearanceSmall"
+        android:layout_below="@id/name"
+        android:text="Quantity: 100"
         android:textColor="#AEB6BD"  />
 
     <TextView
@@ -28,7 +31,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
+        android:layout_below="@id/name"
+        android:layout_toRightOf="@id/quantity"
+        android:layout_marginLeft="10dp"
         android:textAppearance="?android:textAppearanceSmall"
+        android:text="Price: $100.00"
         android:textColor="#AEB6BD"  />
 
-</LinearLayout>
+    <Button
+        android:id="@+id/buttonSale"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/name"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:backgroundTint="@color/colorSale"
+        android:text="Sale" />
+
+
+
+</RelativeLayout>
