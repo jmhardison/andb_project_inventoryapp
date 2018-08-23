@@ -15,36 +15,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.jonathanhardison.andb_project_inventoryapp.data.InventoryContract;
-import com.jonathanhardison.andb_project_inventoryapp.data.InventoryDBHelper;
-import com.jonathanhardison.andb_project_inventoryapp.data.InventoryProvider;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    /**
-     * log tag
-     */
-    private static final String LOG_TAG = InventoryDBHelper.class.getSimpleName();
     private static int LOADER_ID = 0;
     private InventoryCursorAdapter customAdapter;
     private ListView listView;
     private View emptyView;
     private FloatingActionButton fabInventoryAdd;
-
-    /***
-     * onStart method to handle additional query functions.
-     */
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
 
     /***
      * onCreate method called on activity creation. General setup actions.
@@ -67,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         fabInventoryAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: setup onclick to insert new item into inventory
+                //intent to add new item to inventory
                 Intent addInvIntent = new Intent(MainActivity.this, EditActivity.class);
                 startActivity(addInvIntent);
             }
@@ -160,8 +144,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         inv2.put(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_NAME, getString(R.string.sampledata_product2_suppliername));
         inv2.put(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_PHONE, getString(R.string.sampledata_product2_supplierphone));
 
-        Uri holder1 = getContentResolver().insert(InventoryContract.InventoryEntry.CONTENT_URI, inv1);
-        Uri holder2 = getContentResolver().insert(InventoryContract.InventoryEntry.CONTENT_URI, inv2);
+        getContentResolver().insert(InventoryContract.InventoryEntry.CONTENT_URI, inv1);
+        getContentResolver().insert(InventoryContract.InventoryEntry.CONTENT_URI, inv2);
 
     }
 

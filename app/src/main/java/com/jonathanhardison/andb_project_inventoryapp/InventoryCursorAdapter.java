@@ -67,9 +67,7 @@ public class InventoryCursorAdapter extends CursorAdapter {
         saleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //need a method to decrement against the db.
-                //maybe an update where I submit the args and where??
-
+                //if our quantity is greater than 0, we will decrement. Otherwise, let the user know they are out of stock.
                 //create new values
                 if (prodQuantityInt > 0) {
                     int newQuantity = (prodQuantityInt - 1);

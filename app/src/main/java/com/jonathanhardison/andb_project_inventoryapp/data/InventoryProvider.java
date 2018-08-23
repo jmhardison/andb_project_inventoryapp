@@ -68,7 +68,7 @@ public class InventoryProvider extends ContentProvider {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         // Hold the cursor of query
-        Cursor cursorHolder = null;
+        Cursor cursorHolder;
 
         //get type of request uri and switch for appropriate actions.
         int reqtype = sUriMatcher.match(uri);
@@ -88,7 +88,7 @@ public class InventoryProvider extends ContentProvider {
                 break;
             //if type is of INVENTORY_ID
             case INVENTORY_ID:
-                //check for =? tog et id
+                //check for =? to get id
                 selection = InventoryContract.InventoryEntry._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
 
@@ -105,7 +105,7 @@ public class InventoryProvider extends ContentProvider {
                 break;
             default:
                 //throw exception when unknown uri not matching any above.
-                throw new IllegalArgumentException("Cannot query unknown URI " + uri);
+                throw new IllegalArgumentException(getContext().getString(R.string.error_cannotqueryunknownuri) + uri);
 
         }
 
@@ -133,7 +133,7 @@ public class InventoryProvider extends ContentProvider {
                 //return MIME type for item
                 return InventoryContract.InventoryEntry.CONTENT_ITEM_TYPE;
             default:
-                throw new IllegalArgumentException("GetType is not supported for or Unknown URI " + uri + " with match " + match);
+                throw new IllegalArgumentException(getContext().getString(R.string.error_gettypenotsupported_pre) + uri + getContext().getString(R.string.error_gettypenotsupported_post) + match);
         }
     }
 
@@ -153,7 +153,7 @@ public class InventoryProvider extends ContentProvider {
             case INVENTORY:
                 return insertInventory(uri, values);
             default:
-                throw new IllegalArgumentException("Insertion is not supported for " + uri);
+                throw new IllegalArgumentException(getContext().getString(R.string.error_insertionisnotsupported) + uri);
         }
     }
 
@@ -196,7 +196,7 @@ public class InventoryProvider extends ContentProvider {
                 }
                 return returnVal2;
             default:
-                throw new IllegalArgumentException("Delete is not supported for " + uri);
+                throw new IllegalArgumentException(getContext().getString(R.string.error_deletenotsupportedfor) + uri);
         }
     }
 
@@ -222,7 +222,7 @@ public class InventoryProvider extends ContentProvider {
                 return updateInventory(uri, values, selection, selectionArgs);
             default:
                 //throw exception for unsupported uri
-                throw new IllegalArgumentException("Update is not supported for " + uri);
+                throw new IllegalArgumentException(getContext().getString(R.string.error_updatenotsupportedfor) + uri);
         }
     }
 
@@ -240,18 +240,18 @@ public class InventoryProvider extends ContentProvider {
         //check product name is not null
         String prodName = values.getAsString(InventoryContract.InventoryEntry.COLUMN_PRODUCT_NAME);
         if (prodName == null) {
-            throw new IllegalArgumentException("Product name is required");
+            throw new IllegalArgumentException(getContext().getString(R.string.error_required_productname));
         }
         //check price is not negative
         double prodPrice = values.getAsDouble(InventoryContract.InventoryEntry.COLUMN_PRICE);
         if (prodPrice < 0) {
-            throw new IllegalArgumentException("Price cannot be negative");
+            throw new IllegalArgumentException(getContext().getString(R.string.error_required_pricenotnegative));
         }
 
         //check quantity is not negative
         int prodQuantity = values.getAsInteger(InventoryContract.InventoryEntry.COLUMN_QUANTITY);
         if (prodQuantity < 0) {
-            throw new IllegalArgumentException("Quantity cannot be negative");
+            throw new IllegalArgumentException(getContext().getString(R.string.error_required_quantitynotnegative));
         }
 
 
@@ -291,23 +291,23 @@ public class InventoryProvider extends ContentProvider {
             //check quantity is not negative
             int prodQuantity = values.getAsInteger(InventoryContract.InventoryEntry.COLUMN_QUANTITY);
             if (prodQuantity < 0) {
-                throw new IllegalArgumentException("Quantity cannot be negative");
+                throw new IllegalArgumentException(getContext().getString(R.string.error_required_quantitynotnegative));
             }
         } else {
             //check product name is not null
             String prodName = values.getAsString(InventoryContract.InventoryEntry.COLUMN_PRODUCT_NAME);
             if (prodName == null) {
-                throw new IllegalArgumentException("Product name is required");
+                throw new IllegalArgumentException(getContext().getString(R.string.error_required_productname));
             }
             //check price is not negative
             double prodPrice = values.getAsDouble(InventoryContract.InventoryEntry.COLUMN_PRICE);
             if (prodPrice < 0) {
-                throw new IllegalArgumentException("Price cannot be negative");
+                throw new IllegalArgumentException(getContext().getString(R.string.error_required_pricenotnegative));
             }
             //check quantity is not negative
             int prodQuantity = values.getAsInteger(InventoryContract.InventoryEntry.COLUMN_QUANTITY);
             if (prodQuantity < 0) {
-                throw new IllegalArgumentException("Quantity cannot be negative");
+                throw new IllegalArgumentException(getContext().getString(R.string.error_required_quantitynotnegative));
             }
 
             //if nothing in values, then don't do work.

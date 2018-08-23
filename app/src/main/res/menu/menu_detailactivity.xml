@@ -5,15 +5,15 @@
     tools:context=".InventoryDetailActivity">
 
     <item android:id="@+id/action_detailactivity_editrecord"
-        android:title="Edit"
+        android:title="@string/menu_detail_edit"
         app:showAsAction="never"/>
 
     <item android:id="@+id/action_detailactivity_deleterecord"
-        android:title="Delete"
+        android:title="@string/menu_detail_delete"
         app:showAsAction="never"/>
 
     <item
         android:id="@+id/action_detailactivity_ordersupply"
-        android:title="Order From Supplier"
+        android:title="@string/menu_detail_order_from_supplier"
         app:showAsAction="never" />
 </menu>

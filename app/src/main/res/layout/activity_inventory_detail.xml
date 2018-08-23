@@ -125,6 +125,7 @@
     <ImageButton
         android:id="@+id/buttonDetailSubtrackRestockAmount"
         android:layout_marginTop="@dimen/activityxml_detail_imagebutton_margin"
+        android:contentDescription="@string/contentdescription_subtrack_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/detailTextSuppPhone"
@@ -140,13 +141,14 @@
         android:text="@string/activityxml_button_restock" />
     <ImageButton
         android:id="@+id/buttonDetailAddRestockAmount"
+        android:contentDescription="@string/contentdescription_add_button"
         android:layout_marginTop="@dimen/activityxml_detail_imagebutton_margin"
         android:src="@drawable/baseline_add_black_36"
         android:background="@null"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/detailTextSuppPhone"
-        android:layout_toRightOf="@id/buttonDetailRestock"/>
+        android:layout_toEndOf="@id/buttonDetailRestock"/>
 
     <Button
         android:id="@+id/buttonDetailSale"

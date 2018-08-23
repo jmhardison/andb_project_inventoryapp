@@ -19,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -85,7 +84,7 @@ public class InventoryDetailActivity extends AppCompatActivity implements Loader
         }
 
         //change the amount to default
-        restockButton.setText(getString(R.string.activityxml_button_restock) + " " + String.valueOf(restockQuantity));
+        restockButton.setText(getString(R.string.activityxml_button_restock, restockQuantity));
 
         //add onclick listener to adjust quantity to restock
         restockAddQuantityButton.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +92,7 @@ public class InventoryDetailActivity extends AppCompatActivity implements Loader
             public void onClick(View v) {
                 if(restockQuantity < MAX_QUANTITY_ADD && restockQuantity >= MIN_QUANTITY_ADD){
                     restockQuantity++;
-                    restockButton.setText(getString(R.string.activityxml_button_restock) + " " + String.valueOf(restockQuantity));
+                    restockButton.setText(getString(R.string.activityxml_button_restock, restockQuantity));
                 }
             }
         });
@@ -104,7 +103,7 @@ public class InventoryDetailActivity extends AppCompatActivity implements Loader
             public void onClick(View v) {
                 if(restockQuantity <= MAX_QUANTITY_ADD && restockQuantity > MIN_QUANTITY_ADD){
                     restockQuantity--;
-                    restockButton.setText(getString(R.string.activityxml_button_restock) + " " + String.valueOf(restockQuantity));
+                    restockButton.setText(getString(R.string.activityxml_button_restock, restockQuantity));
                 }
             }
         });
@@ -113,9 +112,7 @@ public class InventoryDetailActivity extends AppCompatActivity implements Loader
         saleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //need a method to decrement against the db.
-
-
+                //decrement the quantity if above 0.
                 //create new values
                 if (prodQuantityInt > 0) {
                     int newQuantity = (prodQuantityInt - 1);
@@ -143,9 +140,7 @@ public class InventoryDetailActivity extends AppCompatActivity implements Loader
         restockButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //need a method to decrement against the db.
-
-
+                //restock the quantity if within bounds
                 //create new values
                 if (prodQuantityInt >= 0) {
                     int newQuantity = (prodQuantityInt + restockQuantity);
@@ -206,7 +201,7 @@ public class InventoryDetailActivity extends AppCompatActivity implements Loader
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
-//set cursor position
+        //set cursor position
         if (cursor.moveToFirst()) {
 
             //get index of columns
@@ -248,7 +243,6 @@ public class InventoryDetailActivity extends AppCompatActivity implements Loader
         //clear out data
         prodName.setText("");
         prodPrice.setText("");
-        ;
         prodQuantity.setText("");
         suppName.setText("");
         suppPhone.setText("");

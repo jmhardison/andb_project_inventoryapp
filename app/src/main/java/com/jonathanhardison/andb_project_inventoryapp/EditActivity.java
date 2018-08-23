@@ -130,7 +130,7 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
                     DialogInterface.OnClickListener discardButtonClickListener = new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            // discarded
+                            // discarded so dial phone
                             changesMade=false;
                             dialPhone();
                         }
@@ -148,7 +148,7 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
                     DialogInterface.OnClickListener discardButtonClickListener = new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            // discarded
+                            // discarded so close
                             finish();
                         }
                     };
