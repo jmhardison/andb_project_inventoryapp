@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,11 +37,12 @@ public class InventoryDetailActivity extends AppCompatActivity implements Loader
     private TextView suppPhone;
     private Button restockButton;
     private Button saleButton;
-    private NumberPicker quantityPicker;
+    private ImageButton restockSubtractQuantityButton;
+    private ImageButton restockAddQuantityButton;
     private Uri inputUri;
     private static int LOADER_ID = 2;
     private static int MIN_QUANTITY_ADD = 1;
-    private static int MAX_QUANTITY_ADD = 100;
+    private static int MAX_QUANTITY_ADD = 50;
     private int prodQuantityInt;
     private int restockQuantity = 1;
 
@@ -63,7 +65,8 @@ public class InventoryDetailActivity extends AppCompatActivity implements Loader
         suppPhone = findViewById(R.id.detailTextSuppPhone);
         restockButton = findViewById(R.id.buttonDetailRestock);
         saleButton = findViewById(R.id.buttonDetailSale);
-        quantityPicker = findViewById(R.id.detailQuantityPicker);
+        restockAddQuantityButton = findViewById(R.id.buttonDetailAddRestockAmount);
+        restockSubtractQuantityButton = findViewById(R.id.buttonDetailSubtrackRestockAmount);
 
         //pull in intent extra's if there.
         //if null its a new record, if not then it's editing an existing record, which means pull it up.
@@ -81,19 +84,30 @@ public class InventoryDetailActivity extends AppCompatActivity implements Loader
             finish();
         }
 
-        //set up picker to adjust restock amount
-        quantityPicker.setMinValue(MIN_QUANTITY_ADD);
-        quantityPicker.setMaxValue(MAX_QUANTITY_ADD);
-        quantityPicker.setValue(restockQuantity);
+        //change the amount to default
+        restockButton.setText(getString(R.string.activityxml_button_restock) + " " + String.valueOf(restockQuantity));
 
-        //setup onvalue change listener
-        quantityPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+        //add onclick listener to adjust quantity to restock
+        restockAddQuantityButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                restockQuantity = newVal;
+            public void onClick(View v) {
+                if(restockQuantity < MAX_QUANTITY_ADD && restockQuantity >= MIN_QUANTITY_ADD){
+                    restockQuantity++;
+                    restockButton.setText(getString(R.string.activityxml_button_restock) + " " + String.valueOf(restockQuantity));
+                }
             }
         });
 
+        //subtract onclick listener to adjust quantity to restock
+        restockSubtractQuantityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(restockQuantity <= MAX_QUANTITY_ADD && restockQuantity > MIN_QUANTITY_ADD){
+                    restockQuantity--;
+                    restockButton.setText(getString(R.string.activityxml_button_restock) + " " + String.valueOf(restockQuantity));
+                }
+            }
+        });
 
         //bind button click for the sale
         saleButton.setOnClickListener(new View.OnClickListener() {

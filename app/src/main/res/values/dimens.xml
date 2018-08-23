@@ -10,4 +10,5 @@
     <dimen name="listitem_padding_general">10dp</dimen>
     <dimen name="listitem_quantitywidth">110dp</dimen>
     <dimen name="listitem_margin_general">10dp</dimen>
+    <dimen name="activityxml_detail_imagebutton_margin">5dp</dimen>
 </resources>

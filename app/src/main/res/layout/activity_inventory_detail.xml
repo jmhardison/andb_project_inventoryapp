@@ -122,25 +122,32 @@
         android:layout_marginTop="@dimen/activityxml_detail_margintop"
         />
 
-    <NumberPicker
-        android:id="@+id/detailQuantityPicker"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/detailTextSuppPhone"
+    <ImageButton
+        android:id="@+id/buttonDetailSubtrackRestockAmount"
+        android:layout_marginTop="@dimen/activityxml_detail_imagebutton_margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal"
-
-
-        />
+        android:layout_below="@id/detailTextSuppPhone"
+        android:background="@null"
+        android:src="@drawable/baseline_remove_black_36"/>
     <Button
         android:id="@+id/buttonDetailRestock"
-        android:layout_width="wrap_content"
+        android:layout_width="110dp"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/detailQuantityPicker"
+        android:layout_toEndOf="@id/buttonDetailSubtrackRestockAmount"
         android:layout_below="@id/detailTextSuppPhone"
         android:backgroundTint="@color/colorRestock"
         android:text="@string/activityxml_button_restock" />
+    <ImageButton
+        android:id="@+id/buttonDetailAddRestockAmount"
+        android:layout_marginTop="@dimen/activityxml_detail_imagebutton_margin"
+        android:src="@drawable/baseline_add_black_36"
+        android:background="@null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/detailTextSuppPhone"
+        android:layout_toRightOf="@id/buttonDetailRestock"/>
+
     <Button
         android:id="@+id/buttonDetailSale"
         android:layout_width="wrap_content"
