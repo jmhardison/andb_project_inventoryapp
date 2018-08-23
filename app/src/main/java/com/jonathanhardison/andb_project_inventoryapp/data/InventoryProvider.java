@@ -182,7 +182,7 @@ public class InventoryProvider extends ContentProvider {
                 return returnVal1;
             case INVENTORY_ID:
                 //delete specific item
-                selection = InventoryContract.InventoryEntry.CONTENT_URI + "=?";
+                selection = InventoryContract.InventoryEntry._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
                 int returnVal2 = db.delete(InventoryContract.InventoryEntry.TABLE_NAME,
                         selection,

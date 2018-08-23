@@ -2,5 +2,5 @@
     <string name="app_name">InventoryApp</string>
     <string name="action_create_sample_data">Create Sample Data</string>
     <string name="action_delete_data">Delete Data</string>
-    <string name="emptyview_textview">Hi there... your inventory is empty. Click the + to add some.</string>
+    <string name="emptyview_textview">Inventory is empty. Click the + to add some.</string>
 </resources>

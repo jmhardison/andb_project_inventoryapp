@@ -1,6 +1,8 @@
 package com.jonathanhardison.andb_project_inventoryapp;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -11,9 +13,12 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -29,11 +34,13 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
     private EditText suppPhone;
     private Uri inputUri;
     private static int LOADER_ID = 1;
+    private boolean changesMade = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //harness the views
         prodName = findViewById(R.id.editTextProdName);
@@ -41,6 +48,14 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
         prodQuantity = findViewById(R.id.editTextQuantity);
         suppName = findViewById(R.id.editTextSuppName);
         suppPhone = findViewById(R.id.editTextSuppPhone);
+
+        //set touch listener
+        prodName.setOnTouchListener(changesMadeListener);
+        prodPrice.setOnTouchListener(changesMadeListener);
+        prodQuantity.setOnTouchListener(changesMadeListener);
+        suppName.setOnTouchListener(changesMadeListener);
+        suppPhone.setOnTouchListener(changesMadeListener);
+
 
         //pull in intent extra's if there.
         //if null its a new record, if not then it's editing an existing record, which means pull it up.
@@ -55,9 +70,32 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
             //init the loader
             getSupportLoaderManager().initLoader(LOADER_ID, null, this);
 
+            //invalidate options menu to change the menu to "edit menu"
+            invalidateOptionsMenu();
 
         }
+        else{
+            this.setTitle("Add Inventory");
+        }
 
+    }
+
+    /***
+     * method that changes the active menu
+     * @param menu
+     * @return
+     */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        if(inputUri == null){
+            //get menu items and then set to be invisible.
+            MenuItem menuDeleteItem = menu.findItem(R.id.action_editactivity_deleterecord);
+            MenuItem menuOrderItem = menu.findItem(R.id.action_editactivity_ordersupply);
+            menuDeleteItem.setVisible(false);
+            menuOrderItem.setVisible(false);
+        }
+        return true;
     }
 
     /***
@@ -67,7 +105,7 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_newactivity, menu);
+        getMenuInflater().inflate(R.menu.menu_editactivity, menu);
         return true;
     }
 
@@ -82,40 +120,115 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
             case R.id.action_newactivity_saverecord:
                 saveRecord();
                 break;
+            case R.id.action_editactivity_deleterecord:
+                //delete the record
+                showDeleteConfirmation();
+                break;
+            case R.id.action_editactivity_ordersupply:
+                //call supplier
+                break;
+            case android.R.id.home:
+                if(!changesMade) {
+                    finish();
+                }
+                else{
+                    DialogInterface.OnClickListener discardButtonClickListener =
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    // discarded
+                                    finish();
+                                }
+                            };
+
+                    //show dialog
+                    showUnsavedChanges(discardButtonClickListener);
+                }
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
     /***
+     * helper method to delete the current record
+     */
+    private void deleteRecord(){
+        if(inputUri!=null) {
+            //deletes the current record
+            try {
+
+                //create new record
+                getContentResolver().delete(inputUri, null, null);
+                Toast toastMessage = Toast.makeText(this, "Inventory item deleted.", Toast.LENGTH_LONG);
+                toastMessage.show();
+
+                //finishing here so that if there is an error the intent stays up.
+                finish();
+
+            } catch (Exception c) {
+                //display toast of deletion and info don't call finish so the dialog remains open
+                Toast toastMessage = Toast.makeText(this, "Error deleting record.", Toast.LENGTH_LONG);
+                toastMessage.show();
+                Log.e(LOG_TAG, "Error deleting record. " + c.getMessage());
+            }
+        }
+        else
+        {
+            //in theory should not hit this safety message as the option is hidden until it's an existing record.
+            Toast toastMessage = Toast.makeText(this, "Error deleting record.", Toast.LENGTH_LONG);
+            toastMessage.show();
+        }
+    }
+    /***
      * helper method to insert new record based on data entered.
      */
     private void saveRecord() {
 
-        //get data from items and insert record.
-        ContentValues inv1 = new ContentValues();
-        inv1.put(InventoryContract.InventoryEntry.COLUMN_PRODUCT_NAME, prodName.getText().toString());
-        inv1.put(InventoryContract.InventoryEntry.COLUMN_PRICE, prodPrice.getText().toString()); //100 = 1.00 will use the last two digits as decimals.
-        inv1.put(InventoryContract.InventoryEntry.COLUMN_QUANTITY, prodQuantity.getText().toString());
-        inv1.put(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_NAME, suppName.getText().toString());
-        inv1.put(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_PHONE, suppPhone.getText().toString());
-
-        try {
-            if (inputUri != null) {
-                //update existing
-                getContentResolver().update(inputUri, inv1, null, null);
-
-            } else {
-                //create new record
-                getContentResolver().insert(InventoryContract.InventoryEntry.CONTENT_URI, inv1);
-            }
-            //finishing here so that if there is an error the intent stays up.
-            finish();
-
-        } catch (Exception c) {
-            //display toast of deletion and info
-            Toast toastMessage = Toast.makeText(this, "Error saving record.", Toast.LENGTH_LONG);
+        //if everything is empty then the user must have tried to save in error
+        if (TextUtils.isEmpty(prodName.getText().toString()) && TextUtils.isEmpty(prodPrice.getText().toString()) && TextUtils.isEmpty(prodQuantity.getText().toString()) &&
+                TextUtils.isEmpty(suppName.getText().toString()) && TextUtils.isEmpty(suppPhone.getText().toString())) {
+            Toast toastMessage = Toast.makeText(this, "You must provide some info to save.", Toast.LENGTH_LONG);
             toastMessage.show();
-            Log.e(LOG_TAG, "Error saving record. " + c.getMessage());
+        } else {
+            //get data from items and insert record.
+            ContentValues inv1 = new ContentValues();
+            inv1.put(InventoryContract.InventoryEntry.COLUMN_PRODUCT_NAME, prodName.getText().toString());
+
+            //check if price is null and set it as 0 instead
+            if (TextUtils.isEmpty(prodPrice.getText().toString())) {
+                inv1.put(InventoryContract.InventoryEntry.COLUMN_PRICE, "0"); //100 = 1.00 will use the last two digits as decimals.
+            } else {
+                inv1.put(InventoryContract.InventoryEntry.COLUMN_PRICE, prodPrice.getText().toString()); //100 = 1.00 will use the last two digits as decimals.
+            }
+
+            //check if quantity is null and set it as 0 instead.
+            if (TextUtils.isEmpty(prodPrice.getText().toString())) {
+                inv1.put(InventoryContract.InventoryEntry.COLUMN_QUANTITY, "0");
+            } else {
+                inv1.put(InventoryContract.InventoryEntry.COLUMN_QUANTITY, prodQuantity.getText().toString());
+            }
+
+            inv1.put(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_NAME, suppName.getText().toString());
+            inv1.put(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_PHONE, suppPhone.getText().toString());
+
+            try {
+                if (inputUri != null) {
+                    //update existing
+                    getContentResolver().update(inputUri, inv1, null, null);
+
+                } else {
+                    //create new record
+                    getContentResolver().insert(InventoryContract.InventoryEntry.CONTENT_URI, inv1);
+                }
+                //finishing here so that if there is an error the intent stays up.
+                finish();
+
+            } catch (Exception c) {
+                //display toast of deletion and info
+                Toast toastMessage = Toast.makeText(this, "Error saving record.", Toast.LENGTH_LONG);
+                toastMessage.show();
+                Log.e(LOG_TAG, "Error saving record. " + c.getMessage());
+            }
         }
     }
 
@@ -190,5 +303,95 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
         prodQuantity.getText().clear();
         suppName.getText().clear();
         suppPhone.getText().clear();
+    }
+
+
+    /***
+     * handler for touch events on view to mark that changes were made or attempted
+     */
+    private View.OnTouchListener changesMadeListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            changesMade = true;
+            return false;
+        }
+    };
+
+
+    /***
+     * method to handle showing unsaved changes dialog
+     * @param discardButtonClickListener
+     */
+    private void showUnsavedChanges(
+            DialogInterface.OnClickListener discardButtonClickListener) {
+
+        //create the alert dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Discard changes and return to list?");
+        builder.setPositiveButton("DISCARD", discardButtonClickListener);
+        builder.setNegativeButton("KEEP EDITING", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //if user did not click discard, stay and close this dialog.
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    /***
+     * method for handling delete confirmation
+     */
+    private void showDeleteConfirmation() {
+        //create dialog for handling deletion confirmation
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Delete this inventory item?");
+        builder.setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // delete selected, commit action
+                deleteRecord();
+            }
+        });
+        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Cancel" button, so dismiss the dialog
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    /***
+     * method for handling back pressed and determining if unsaved changes exist.
+     */
+    @Override
+    public void onBackPressed() {
+        //no changes, move on with back
+        if (!changesMade) {
+            super.onBackPressed();
+            return;
+        }
+
+        // Changes in progress should be saved, warn the user.
+        DialogInterface.OnClickListener discardButtonClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //discarded so close intent
+                        finish();
+                    }
+                };
+
+
+        showUnsavedChanges(discardButtonClickListener);
     }
 }
