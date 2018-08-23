@@ -83,9 +83,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 //create uri of item
                 Uri invURI = ContentUris.withAppendedId(InventoryContract.InventoryEntry.CONTENT_URI, id);
                 //setup intent and load extras
-                Intent editInvIntent = new Intent(MainActivity.this, EditActivity.class);
-                editInvIntent.setData(invURI);
-                startActivity(editInvIntent);
+                Intent detailInvIntent = new Intent(MainActivity.this, InventoryDetailActivity.class);
+                detailInvIntent.setData(invURI);
+                startActivity(detailInvIntent);
             }
         });
 

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    tools:context=".InventoryDetailActivity">
+
+    <!-- product name -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/detailTextProdName"
+        android:layout_alignParentStart="true"
+        android:text="Product Name:"
+        android:layout_marginTop="15dp"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/detailTextProdName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="10dp"
+        android:ems="12"
+        android:textSize="15sp"
+        android:inputType="textCapWords"
+        android:singleLine="false"
+        android:hint="Name"
+        android:layout_marginTop="15dp"
+        />
+
+    <!-- product price -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/detailTextPrice"
+        android:layout_alignParentStart="true"
+        android:text="Price:"
+        android:textSize="15sp"
+        android:layout_marginTop="15dp"
+        />
+
+    <TextView
+        android:id="@+id/detailTextPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/detailTextProdName"
+        android:layout_marginEnd="10dp"
+        android:ems="12"
+        android:inputType="numberDecimal"
+        android:hint="Price"
+        android:textSize="15sp"
+        android:layout_marginTop="15dp"
+        />
+
+    <!-- product quantity -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/detailTextQuantity"
+        android:layout_alignParentStart="true"
+        android:text="Quantity:"
+        android:textSize="15sp"
+        android:layout_marginTop="15dp"
+        />
+
+    <TextView
+        android:id="@+id/detailTextQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/detailTextPrice"
+        android:layout_marginEnd="10dp"
+        android:ems="12"
+        android:inputType="number"
+        android:hint="Quantity"
+        android:textSize="15sp"
+        android:layout_marginTop="15dp"
+        />
+
+    <!-- supplier name -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/detailTextSuppName"
+        android:layout_alignParentStart="true"
+        android:text="Supplier Name:"
+        android:textSize="15sp"
+        android:layout_marginTop="15dp"
+        />
+
+    <TextView
+        android:id="@+id/detailTextSuppName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
+        android:layout_below="@id/detailTextQuantity"
+        android:ems="12"
+        android:textSize="15sp"
+        android:inputType="textCapWords"
+        android:singleLine="false"
+        android:hint="Name"
+        android:layout_marginTop="15dp"
+        />
+
+    <!-- supplier phone -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/detailTextSuppPhone"
+        android:layout_alignParentStart="true"
+        android:text="Supplier Phone:"
+        android:textSize="15sp"
+        android:layout_marginTop="15dp"
+        />
+
+    <TextView
+        android:id="@+id/detailTextSuppPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/detailTextSuppName"
+        android:layout_marginEnd="10dp"
+        android:ems="12"
+        android:inputType="phone"
+        android:singleLine="false"
+        android:hint="Phone"
+        android:textSize="15sp"
+        android:layout_marginTop="15dp"
+        />
+
+    <Button
+        android:id="@+id/buttonDetailRestock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/detailTextSuppPhone"
+        android:backgroundTint="@color/colorRestock"
+        android:text="Restock" />
+    <Button
+        android:id="@+id/buttonDetailSale"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/detailTextSuppPhone"
+        android:layout_alignParentRight="true"
+        android:backgroundTint="@color/colorSale"
+        android:text="Sale" />
+
+
+</RelativeLayout>

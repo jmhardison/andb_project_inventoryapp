@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorSale">#669c60</color>
+    <color name="colorRestock">#606f9c</color>
 </resources>

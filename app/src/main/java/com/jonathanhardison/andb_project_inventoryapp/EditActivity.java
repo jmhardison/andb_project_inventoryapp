@@ -25,6 +25,8 @@ import android.widget.Toast;
 import com.jonathanhardison.andb_project_inventoryapp.data.InventoryContract;
 import com.jonathanhardison.andb_project_inventoryapp.data.InventoryDBHelper;
 
+import java.util.Locale;
+
 /***
  * EditActivity is used for both edit and new inventory items.
  */
@@ -92,9 +94,7 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onPrepareOptionsMenu(menu);
         if (inputUri == null) {
             //get menu items and then set to be invisible.
-            MenuItem menuDeleteItem = menu.findItem(R.id.action_editactivity_deleterecord);
             MenuItem menuOrderItem = menu.findItem(R.id.action_editactivity_ordersupply);
-            menuDeleteItem.setVisible(false);
             menuOrderItem.setVisible(false);
         }
         return true;
@@ -122,10 +122,6 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
             case R.id.action_newactivity_saverecord:
                 saveRecord();
                 break;
-            case R.id.action_editactivity_deleterecord:
-                //delete the record
-                showDeleteConfirmation();
-                break;
             case R.id.action_editactivity_ordersupply:
                 //call supplier
                 break;
@@ -150,34 +146,6 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
         return super.onOptionsItemSelected(item);
     }
 
-    /***
-     * helper method to delete the current record
-     */
-    private void deleteRecord() {
-        if (inputUri != null) {
-            //deletes the current record
-            try {
-
-                //create new record
-                getContentResolver().delete(inputUri, null, null);
-                Toast toastMessage = Toast.makeText(this, "Inventory item deleted.", Toast.LENGTH_LONG);
-                toastMessage.show();
-
-                //finishing here so that if there is an error the intent stays up.
-                finish();
-
-            } catch (Exception c) {
-                //display toast of deletion and info don't call finish so the dialog remains open
-                Toast toastMessage = Toast.makeText(this, "Error deleting record.", Toast.LENGTH_LONG);
-                toastMessage.show();
-                Log.e(LOG_TAG, "Error deleting record. " + c.getMessage());
-            }
-        } else {
-            //in theory should not hit this safety message as the option is hidden until it's an existing record.
-            Toast toastMessage = Toast.makeText(this, "Error deleting record.", Toast.LENGTH_LONG);
-            toastMessage.show();
-        }
-    }
 
     /***
      * helper method to insert new record based on data entered.
@@ -284,7 +252,7 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
             String prodNameText = cursor.getString(prodNameIndex);
             prodName.setText(prodNameText);
 
-            String prodPriceText = String.format("%.2f", cursor.getDouble(prodPriceIndex));
+            String prodPriceText = String.format(Locale.ENGLISH, "%.2f", cursor.getDouble(prodPriceIndex));
             prodPrice.setText(prodPriceText);
 
             String prodQuantityText = String.valueOf(cursor.getInt(prodQuantityIndex));
@@ -358,32 +326,7 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
         alertDialog.show();
     }
 
-    /***
-     * method for handling delete confirmation
-     */
-    private void showDeleteConfirmation() {
-        //create dialog for handling deletion confirmation
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Delete this inventory item?");
-        builder.setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // delete selected, commit action
-                deleteRecord();
-            }
-        });
-        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User clicked the "Cancel" button, so dismiss the dialog
-                if (dialog != null) {
-                    dialog.dismiss();
-                }
-            }
-        });
 
-        // Create and show the AlertDialog
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-    }
 
     /***
      * method for handling back pressed and determining if unsaved changes exist.
