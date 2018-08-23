@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
+    android:layout_marginLeft="@dimen/activityxml_detail_margin_general"
+    android:layout_marginRight="@dimen/activityxml_detail_margin_general"
     tools:context=".InventoryDetailActivity">
 
     <!-- product name -->
@@ -14,9 +13,9 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/detailTextProdName"
         android:layout_alignParentStart="true"
-        android:text="Product Name:"
-        android:layout_marginTop="15dp"
-        android:textSize="15sp" />
+        android:text="@string/activityxml_productname"
+        android:layout_marginTop="@dimen/activityxml_detail_margintop"
+        android:textSize="@dimen/activityxml_detail_textsize_general" />
 
     <TextView
         android:id="@+id/detailTextProdName"
@@ -24,13 +23,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="@dimen/activityxml_detail_margin_general"
         android:ems="12"
-        android:textSize="15sp"
-        android:inputType="textCapWords"
+        android:textSize="@dimen/activityxml_detail_textsize_general"
         android:singleLine="false"
-        android:hint="Name"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="@dimen/activityxml_detail_margintop"
         />
 
     <!-- product price -->
@@ -39,9 +36,9 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/detailTextPrice"
         android:layout_alignParentStart="true"
-        android:text="Price:"
-        android:textSize="15sp"
-        android:layout_marginTop="15dp"
+        android:text="@string/activityxml_price"
+        android:textSize="@dimen/activityxml_detail_textsize_general"
+        android:layout_marginTop="@dimen/activityxml_detail_margintop"
         />
 
     <TextView
@@ -50,12 +47,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@id/detailTextProdName"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="@dimen/activityxml_detail_margin_general"
         android:ems="12"
-        android:inputType="numberDecimal"
-        android:hint="Price"
-        android:textSize="15sp"
-        android:layout_marginTop="15dp"
+        android:textSize="@dimen/activityxml_detail_textsize_general"
+        android:layout_marginTop="@dimen/activityxml_detail_margintop"
         />
 
     <!-- product quantity -->
@@ -64,9 +59,9 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/detailTextQuantity"
         android:layout_alignParentStart="true"
-        android:text="Quantity:"
-        android:textSize="15sp"
-        android:layout_marginTop="15dp"
+        android:text="@string/activityxml_quantity"
+        android:textSize="@dimen/activityxml_detail_textsize_general"
+        android:layout_marginTop="@dimen/activityxml_detail_margintop"
         />
 
     <TextView
@@ -75,12 +70,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@id/detailTextPrice"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="@dimen/activityxml_detail_margin_general"
         android:ems="12"
-        android:inputType="number"
-        android:hint="Quantity"
-        android:textSize="15sp"
-        android:layout_marginTop="15dp"
+        android:textSize="@dimen/activityxml_detail_textsize_general"
+        android:layout_marginTop="@dimen/activityxml_detail_margintop"
         />
 
     <!-- supplier name -->
@@ -89,9 +82,9 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/detailTextSuppName"
         android:layout_alignParentStart="true"
-        android:text="Supplier Name:"
-        android:textSize="15sp"
-        android:layout_marginTop="15dp"
+        android:text="@string/activityxml_suppliername"
+        android:textSize="@dimen/activityxml_detail_textsize_general"
+        android:layout_marginTop="@dimen/activityxml_detail_margintop"
         />
 
     <TextView
@@ -99,14 +92,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="@dimen/activityxml_detail_margin_general"
         android:layout_below="@id/detailTextQuantity"
         android:ems="12"
-        android:textSize="15sp"
-        android:inputType="textCapWords"
-        android:singleLine="false"
-        android:hint="Name"
-        android:layout_marginTop="15dp"
+        android:textSize="@dimen/activityxml_detail_textsize_general"
+        android:layout_marginTop="@dimen/activityxml_detail_margintop"
         />
 
     <!-- supplier phone -->
@@ -115,9 +105,9 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/detailTextSuppPhone"
         android:layout_alignParentStart="true"
-        android:text="Supplier Phone:"
-        android:textSize="15sp"
-        android:layout_marginTop="15dp"
+        android:text="@string/activityxml_supplierphone"
+        android:textSize="@dimen/activityxml_detail_textsize_general"
+        android:layout_marginTop="@dimen/activityxml_detail_margintop"
         />
 
     <TextView
@@ -126,13 +116,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@id/detailTextSuppName"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="@dimen/activityxml_detail_margin_general"
         android:ems="12"
-        android:inputType="phone"
-        android:singleLine="false"
-        android:hint="Phone"
-        android:textSize="15sp"
-        android:layout_marginTop="15dp"
+        android:textSize="@dimen/activityxml_detail_textsize_general"
+        android:layout_marginTop="@dimen/activityxml_detail_margintop"
         />
 
     <Button
@@ -142,15 +129,15 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@id/detailTextSuppPhone"
         android:backgroundTint="@color/colorRestock"
-        android:text="Restock" />
+        android:text="@string/activityxml_button_restock" />
     <Button
         android:id="@+id/buttonDetailSale"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/detailTextSuppPhone"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:backgroundTint="@color/colorSale"
-        android:text="Sale" />
+        android:text="@string/activityxml_button_sale" />
 
 
 </RelativeLayout>

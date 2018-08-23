@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="mainactivity_dividerheight">0dp</dimen>
+    <dimen name="mainactivity_margingeneral">10dp</dimen>
+    <dimen name="activityxml_edit_textsize_general">15sp</dimen>
+    <dimen name="activityxml_detail_textsize_general">15sp</dimen>
+    <dimen name="activityxml_edit_margin_general">10dp</dimen>
+    <dimen name="activityxml_detail_margin_general">10dp</dimen>
+    <dimen name="activityxml_detail_margintop">15dp</dimen>
+    <dimen name="listitem_padding_general">10dp</dimen>
+    <dimen name="listitem_quantitywidth">110dp</dimen>
+    <dimen name="listitem_margin_general">10dp</dimen>
 </resources>

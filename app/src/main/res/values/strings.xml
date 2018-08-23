@@ -33,4 +33,19 @@
     <string name="general_deleteinventoryitem_message">Delete this inventory item?</string>
     <string name="general_deleteinventoryitem_positive">DELETE</string>
     <string name="general_deleteinventoryitem_negative">CANCEL</string>
+    <string name="activityxml_productname">Product Name:</string>
+    <string name="activityxml_productname_hint">Name</string>
+    <string name="activityxml_price">Price:</string>
+    <string name="activityxml_price_hint">Price</string>
+    <string name="activityxml_quantity">Quantity:</string>
+    <string name="activityxml_quantity_hint">Quantity</string>
+    <string name="activityxml_suppliername">Supplier Name:</string>
+    <string name="activityxml_suppliername_hint">Supplier Name</string>
+    <string name="activityxml_supplierphone">Supplier Phone:</string>
+    <string name="activityxml_supplierphone_hint">Supplier Phone</string>
+    <string name="activityxml_button_restock">Restock</string>
+    <string name="activityxml_button_sale">Sale</string>
+    <string name="listitem_placeholdertext">placeholder</string>
+    <string name="listitem_font_general">sans-serif</string>
+    <string name="listitem_font_product">sans-serif-medium</string>
 </resources>

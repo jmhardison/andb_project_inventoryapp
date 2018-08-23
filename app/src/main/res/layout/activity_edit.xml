@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
+    android:layout_marginLeft="@dimen/activityxml_edit_margin_general"
+    android:layout_marginRight="@dimen/activityxml_edit_margin_general"
     tools:context=".EditActivity">
 
     <!-- product name -->
@@ -14,8 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/editTextProdName"
         android:layout_alignParentStart="true"
-        android:text="Product Name:"
-        android:textSize="15sp" />
+        android:text="@string/activityxml_productname"
+        android:textSize="@dimen/activityxml_edit_textsize_general" />
 
     <EditText
         android:id="@+id/editTextProdName"
@@ -23,12 +22,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="@dimen/activityxml_edit_margin_general"
         android:ems="12"
-        android:textSize="15sp"
+        android:textSize="@dimen/activityxml_edit_textsize_general"
         android:inputType="textCapWords"
         android:singleLine="false"
-        android:hint="Name"/>
+        android:hint="@string/activityxml_productname_hint"/>
 
     <!-- product price -->
     <TextView
@@ -36,8 +35,8 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/editTextPrice"
         android:layout_alignParentStart="true"
-        android:text="Price:"
-        android:textSize="15sp" />
+        android:text="@string/activityxml_price"
+        android:textSize="@dimen/activityxml_edit_textsize_general" />
 
     <EditText
         android:id="@+id/editTextPrice"
@@ -45,11 +44,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@id/editTextProdName"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="@dimen/activityxml_edit_margin_general"
         android:ems="12"
         android:inputType="numberDecimal"
-        android:hint="Price"
-        android:textSize="15sp" />
+        android:hint="@string/activityxml_price_hint"
+        android:textSize="@dimen/activityxml_edit_textsize_general" />
 
     <!-- product quantity -->
     <TextView
@@ -57,8 +56,8 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/editTextQuantity"
         android:layout_alignParentStart="true"
-        android:text="Quantity:"
-        android:textSize="15sp" />
+        android:text="@string/activityxml_quantity"
+        android:textSize="@dimen/activityxml_edit_textsize_general" />
 
     <EditText
         android:id="@+id/editTextQuantity"
@@ -66,11 +65,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@id/editTextPrice"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="@dimen/activityxml_edit_margin_general"
         android:ems="12"
         android:inputType="number"
-        android:hint="Quantity"
-        android:textSize="15sp" />
+        android:hint="@string/activityxml_quantity_hint"
+        android:textSize="@dimen/activityxml_edit_textsize_general" />
 
     <!-- supplier name -->
     <TextView
@@ -78,21 +77,21 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/editTextSuppName"
         android:layout_alignParentStart="true"
-        android:text="Supplier Name:"
-        android:textSize="15sp" />
+        android:text="@string/activityxml_suppliername"
+        android:textSize="@dimen/activityxml_edit_textsize_general" />
 
     <EditText
         android:id="@+id/editTextSuppName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="@dimen/activityxml_edit_margin_general"
         android:layout_below="@id/editTextQuantity"
         android:ems="12"
-        android:textSize="15sp"
+        android:textSize="@dimen/activityxml_edit_textsize_general"
         android:inputType="textCapWords"
         android:singleLine="false"
-        android:hint="Name" />
+        android:hint="@string/activityxml_suppliername_hint" />
 
     <!-- supplier phone -->
     <TextView
@@ -100,8 +99,8 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/editTextSuppPhone"
         android:layout_alignParentStart="true"
-        android:text="Supplier Phone:"
-        android:textSize="15sp" />
+        android:text="@string/activityxml_supplierphone"
+        android:textSize="@dimen/activityxml_edit_textsize_general" />
 
     <EditText
         android:id="@+id/editTextSuppPhone"
@@ -109,10 +108,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@id/editTextSuppName"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="@dimen/activityxml_edit_margin_general"
         android:ems="12"
         android:inputType="phone"
         android:singleLine="false"
-        android:hint="Phone"
-        android:textSize="15sp" />
+        android:hint="@string/activityxml_supplierphone_hint"
+        android:textSize="@dimen/activityxml_edit_textsize_general" />
 </RelativeLayout>

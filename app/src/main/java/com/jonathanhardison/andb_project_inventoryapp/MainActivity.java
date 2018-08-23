@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
      */
     private static final String LOG_TAG = InventoryDBHelper.class.getSimpleName();
     private static int LOADER_ID = 0;
-    private ProgressBar progressBarView;
     private InventoryCursorAdapter customAdapter;
     private ListView listView;
     private View emptyView;
@@ -45,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     protected void onStart() {
         super.onStart();
-        progressBarView.setVisibility(View.INVISIBLE);
     }
 
     /***
@@ -58,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setContentView(R.layout.activity_main);
 
         //pull view references
-        progressBarView = findViewById(R.id.indeterminateBar);
         emptyView = findViewById(R.id.empty_view);
         listView = findViewById(R.id.list);
         fabInventoryAdd = findViewById(R.id.fabActionButton);

@@ -14,12 +14,6 @@
         android:divider="@null"
         android:dividerHeight="@dimen/mainactivity_dividerheight"/>
 
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:id="@+id/indeterminateBar"
-        />
 
     <RelativeLayout
         android:id="@+id/empty_view"
@@ -43,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/mainactivity_margingeneral"
         android:src="@drawable/baseline_add_white_48"/>
 
 </RelativeLayout>

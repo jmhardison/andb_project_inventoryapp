@@ -1,53 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Layout for a single list item in the list of pets -->
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:descendantFocusability="blocksDescendants"
-    android:padding="10dp">
+    android:padding="@dimen/listitem_padding_general">
 
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-medium"
+        android:fontFamily="@string/listitem_font_product"
         android:textAppearance="?android:textAppearanceMedium"
-        android:text="placeholder"
-        android:textColor="#2B3D4D"  />
+        android:text="@string/listitem_placeholdertext"
+        android:textColor="@color/general_text_color"  />
 
     <TextView
         android:id="@+id/quantity"
-        android:layout_width="110dp"
+        android:layout_width="@dimen/listitem_quantitywidth"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
+        android:fontFamily="@string/listitem_font_general"
         android:textAppearance="?android:textAppearanceSmall"
         android:layout_below="@id/name"
-        android:text="Quantity: 100"
-        android:textColor="#AEB6BD"  />
+        android:text="@string/listitem_placeholdertext"
+        android:textColor="@color/general_subtext_color"  />
 
     <TextView
         android:id="@+id/price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
+        android:fontFamily="@string/listitem_font_general"
         android:layout_below="@id/name"
-        android:layout_toRightOf="@id/quantity"
-        android:layout_marginLeft="10dp"
+        android:layout_toEndOf="@id/quantity"
+        android:layout_marginStart="@dimen/listitem_margin_general"
         android:textAppearance="?android:textAppearanceSmall"
-        android:text="Price: $100.00"
-        android:textColor="#AEB6BD"  />
+        android:text="@string/listitem_placeholdertext"
+        android:textColor="@color/general_subtext_color"  />
 
     <Button
         android:id="@+id/buttonSale"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/name"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:backgroundTint="@color/colorSale"
-        android:text="Sale" />
+        android:text="@string/activityxml_button_sale" />
 
 
 
