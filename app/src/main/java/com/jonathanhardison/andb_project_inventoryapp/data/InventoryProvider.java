@@ -278,29 +278,42 @@ public class InventoryProvider extends ContentProvider {
      * @return
      */
     private int updateInventory(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-
         /* perform validation logic */
-        //check product name is not null
-        String prodName = values.getAsString(InventoryContract.InventoryEntry.COLUMN_PRODUCT_NAME);
-        if (prodName == null) {
-            throw new IllegalArgumentException("Product name is required");
+        //first step is to see if we are checking only for quantity
+        if(values.containsKey(InventoryContract.InventoryEntry.COLUMN_QUANTITY) &&
+                !(values.containsKey(InventoryContract.InventoryEntry.COLUMN_PRICE) &&
+                values.containsKey(InventoryContract.InventoryEntry.COLUMN_PRODUCT_NAME) &&
+                values.containsKey(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_PHONE) &&
+                values.containsKey(InventoryContract.InventoryEntry.COLUMN_SUPPLIER_NAME))){
+            //perform validation of only the quantity
+            //check quantity is not negative
+            int prodQuantity = values.getAsInteger(InventoryContract.InventoryEntry.COLUMN_QUANTITY);
+            if (prodQuantity < 0) {
+                throw new IllegalArgumentException("Quantity cannot be negative");
+            }
         }
-        //check price is not negative
-        double prodPrice = values.getAsDouble(InventoryContract.InventoryEntry.COLUMN_PRICE);
-        if (prodPrice < 0) {
-            throw new IllegalArgumentException("Price cannot be negative");
-        }
-        //check quantity is not negative
-        int prodQuantity = values.getAsInteger(InventoryContract.InventoryEntry.COLUMN_QUANTITY);
-        if (prodQuantity < 0) {
-            throw new IllegalArgumentException("Quantity cannot be negative");
-        }
+        else {
+            //check product name is not null
+            String prodName = values.getAsString(InventoryContract.InventoryEntry.COLUMN_PRODUCT_NAME);
+            if (prodName == null) {
+                throw new IllegalArgumentException("Product name is required");
+            }
+            //check price is not negative
+            double prodPrice = values.getAsDouble(InventoryContract.InventoryEntry.COLUMN_PRICE);
+            if (prodPrice < 0) {
+                throw new IllegalArgumentException("Price cannot be negative");
+            }
+            //check quantity is not negative
+            int prodQuantity = values.getAsInteger(InventoryContract.InventoryEntry.COLUMN_QUANTITY);
+            if (prodQuantity < 0) {
+                throw new IllegalArgumentException("Quantity cannot be negative");
+            }
 
-        //if nothing in values, then don't do work.
-        if (values.size() == 0) {
-            return 0;
+            //if nothing in values, then don't do work.
+            if (values.size() == 0) {
+                return 0;
+            }
         }
-
         // get write mode for db
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
