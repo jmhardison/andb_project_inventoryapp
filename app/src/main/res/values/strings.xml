@@ -13,6 +13,7 @@
     <string name="general_priceprepend">Price:</string>
     <string name="general_quantityprepend">Quantity:</string>
     <string name="general_priceformat">$%.2f</string>
+    <string name="general_priceformatedit">%.2f</string>
     <string name="general_toast_solditem">Sold 1 item.</string>
     <string name="general_toast_outofstock">Out of stock, order more.</string>
     <string name="error_failedinsertrow">Failed to insert row for</string>

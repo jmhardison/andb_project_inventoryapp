@@ -341,7 +341,7 @@ public class InventoryDetailActivity extends AppCompatActivity implements Loader
      */
     private void dialPhone(){
         Intent phoneIntent = new Intent(Intent.ACTION_DIAL);
-        phoneIntent.setData(Uri.parse(R.string.general_phoneintent_prependtype + suppPhone.getText().toString()));
+        phoneIntent.setData(Uri.parse(getString(R.string.general_phoneintent_prependtype) + suppPhone.getText().toString()));
         if (phoneIntent.resolveActivity(getPackageManager()) != null) {
             startActivity(phoneIntent);
         }

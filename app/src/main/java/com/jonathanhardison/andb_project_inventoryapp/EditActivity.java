@@ -168,8 +168,8 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
     private void saveRecord() {
 
         //if everything is empty then the user must have tried to save in error
-        if (TextUtils.isEmpty(prodName.getText().toString()) && TextUtils.isEmpty(prodPrice.getText().toString()) && TextUtils.isEmpty(prodQuantity.getText().toString()) &&
-                TextUtils.isEmpty(suppName.getText().toString()) && TextUtils.isEmpty(suppPhone.getText().toString())) {
+        if (TextUtils.isEmpty(prodName.getText().toString()) || TextUtils.isEmpty(prodPrice.getText().toString()) || TextUtils.isEmpty(prodQuantity.getText().toString()) ||
+                TextUtils.isEmpty(suppName.getText().toString()) || TextUtils.isEmpty(suppPhone.getText().toString())) {
             Toast toastMessage = Toast.makeText(this, R.string.editactivity_toast_noinfoprovided, Toast.LENGTH_LONG);
             toastMessage.show();
         } else {
@@ -179,9 +179,9 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
 
             //check if price is null and set it as 0 instead
             if (TextUtils.isEmpty(prodPrice.getText().toString())) {
-                inv1.put(InventoryContract.InventoryEntry.COLUMN_PRICE, "0"); //100 = 1.00 will use the last two digits as decimals.
+                inv1.put(InventoryContract.InventoryEntry.COLUMN_PRICE, "0");
             } else {
-                inv1.put(InventoryContract.InventoryEntry.COLUMN_PRICE, prodPrice.getText().toString()); //100 = 1.00 will use the last two digits as decimals.
+                inv1.put(InventoryContract.InventoryEntry.COLUMN_PRICE, prodPrice.getText().toString());
             }
 
             //check if quantity is null and set it as 0 instead.
@@ -267,7 +267,7 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
             String prodNameText = cursor.getString(prodNameIndex);
             prodName.setText(prodNameText);
 
-            String prodPriceText = String.format(Locale.ENGLISH, getString(R.string.general_priceformat), cursor.getDouble(prodPriceIndex));
+            String prodPriceText = String.format(Locale.ENGLISH, getString(R.string.general_priceformatedit), cursor.getDouble(prodPriceIndex));
             prodPrice.setText(prodPriceText);
 
             String prodQuantityText = String.valueOf(cursor.getInt(prodQuantityIndex));
